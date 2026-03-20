@@ -1,0 +1,98 @@
+---
+import { getCollection } from 'astro:content';
+import LanguageSelector from '../components/LanguageSelector.astro';
+import ConceptBlock from '../components/ConceptBlock.astro';
+import { capitalize } from '../utils/strings';
+
+// Get all concepts
+const allConcepts = await getCollection('concepts');
+
+// Get available languages from all concepts
+const languageSet = new Set<string>();
+for (const concept of allConcepts) {
+  for (const lang of Object.keys(concept.data.languages)) {
+    languageSet.add(lang);
+  }
+}
+const availableLanguages = Array.from(languageSet).sort();
+
+// Read URL params
+const fromLang = Astro.url.searchParams.get('from') || 'javascript';
+const toLang = Astro.url.searchParams.get('to') || 'python';
+
+// Validate languages
+const validFrom = availableLanguages.includes(fromLang) ? fromLang : 'javascript';
+const validTo = availableLanguages.includes(toLang) ? toLang : 'python';
+
+// Filter concepts that have both languages
+const filteredConcepts = allConcepts.filter(
+  (concept) =>
+    concept.data.languages[validFrom] !== undefined &&
+    concept.data.languages[validTo] !== undefined
+);
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LangBridge — {capitalize(validFrom)} → {capitalize(validTo)}</title>
+    <meta name="description" content={`Learn ${capitalize(validTo)} from ${capitalize(validFrom)} with side-by-side syntax comparisons.`} />
+  </head>
+  <body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm">
+      <div class="max-w-5xl mx-auto px-4 py-4 flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <a href="/" class="text-2xl font-bold text-indigo-700 hover:text-indigo-800 transition-colors">
+            🌉 LangBridge
+          </a>
+          <p class="text-xs text-gray-500 mt-0.5">Learn a new language from the one you know</p>
+        </div>
+        <LanguageSelector fromLang={validFrom} toLang={validTo} availableLanguages={availableLanguages} />
+      </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="max-w-5xl mx-auto px-4 py-8">
+      {filteredConcepts.length === 0 ? (
+        <div class="text-center py-16">
+          <p class="text-gray-500 text-lg">No concepts available for {capitalize(validFrom)} → {capitalize(validTo)}.</p>
+          <p class="text-gray-400 text-sm mt-2">Try a different language combination.</p>
+        </div>
+      ) : (
+        <>
+          <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">
+              {capitalize(validFrom)} <span class="text-indigo-500">→</span> {capitalize(validTo)}
+            </h1>
+            <p class="text-gray-500">
+              {filteredConcepts.length} concept{filteredConcepts.length !== 1 ? 's' : ''} available
+            </p>
+          </div>
+
+          {filteredConcepts.map((concept) => (
+            <ConceptBlock
+              title={concept.data.title}
+              fromLang={validFrom}
+              toLang={validTo}
+              fromEntry={concept.data.languages[validFrom]}
+              toEntry={concept.data.languages[validTo]}
+              mental_shift={concept.data.mental_shift}
+              gotchas={concept.data.gotchas}
+            />
+          ))}
+        </>
+      )}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-16">
+      <div class="max-w-5xl mx-auto px-4 py-6 flex flex-wrap justify-between items-center gap-4 text-sm text-gray-500">
+        <p>🌉 LangBridge — Mental model translator for programmers</p>
+        <p>MIT License</p>
+      </div>
+    </footer>
+  </body>
+</html>

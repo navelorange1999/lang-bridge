@@ -1,0 +1,85 @@
+id: functions
+title: Functions
+
+languages:
+  javascript:
+    code: |
+      // Function declaration
+      function greet(name) {
+        return `Hello, ${name}!`;
+      }
+
+      // Arrow function
+      const add = (a, b) => a + b;
+
+      // Default parameters
+      function power(base, exp = 2) {
+        return base ** exp;
+      }
+    explanation: |
+      JavaScript supports function declarations, arrow functions, and default parameters.
+
+  python:
+    code: |
+      # Function definition
+      def greet(name):
+          return f"Hello, {name}!"
+
+      # Lambda (anonymous function)
+      add = lambda a, b: a + b
+
+      # Default parameters
+      def power(base, exp=2):
+          return base ** exp
+    explanation: |
+      Python uses def for functions and lambda for simple anonymous functions.
+
+  typescript:
+    code: |
+      // Typed function
+      function greet(name: string): string {
+        return `Hello, ${name}!`;
+      }
+
+      // Arrow function with types
+      const add = (a: number, b: number): number => a + b;
+    explanation: |
+      TypeScript adds type annotations to function parameters and return values.
+
+  go:
+    code: |
+      // Function declaration
+      func greet(name string) string {
+          return "Hello, " + name + "!"
+      }
+
+      // Multiple return values
+      func divide(a, b float64) (float64, error) {
+          if b == 0 {
+              return 0, errors.New("division by zero")
+          }
+          return a / b, nil
+      }
+    explanation: |
+      Go functions can return multiple values, which is commonly used for error handling.
+
+  rust:
+    code: |
+      // Function declaration
+      fn greet(name: &str) -> String {
+          format!("Hello, {}!", name)
+      }
+
+      // Closure (anonymous function)
+      let add = |a: i32, b: i32| -> i32 { a + b };
+    explanation: |
+      Rust functions use fn keyword. The last expression without a semicolon is the return value.
+
+mental_shift: |
+  Python lambdas are intentionally limited to single expressions. Go's multiple return values replace exceptions for error handling. Rust's implicit return (last expression) is a common source of confusion for newcomers.
+
+gotchas:
+  - Python lambda is limited to a single expression — use def for multi-line functions
+  - Go has no optional parameters or function overloading
+  - Rust closures capture variables from scope — this affects ownership
+  - JavaScript hoists function declarations but not function expressions
