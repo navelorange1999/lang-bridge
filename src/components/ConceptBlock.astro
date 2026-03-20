@@ -1,0 +1,75 @@
+---
+import CodeBlock from './CodeBlock.astro';
+import { capitalize } from '../utils/strings';
+
+interface LanguageEntry {
+  code: string;
+  explanation: string;
+}
+
+interface Props {
+  title: string;
+  fromLang: string;
+  toLang: string;
+  fromEntry: LanguageEntry;
+  toEntry: LanguageEntry;
+  mental_shift: string;
+  gotchas: string[];
+}
+
+const { title, fromLang, toLang, fromEntry, toEntry, mental_shift, gotchas } = Astro.props;
+---
+
+<section class="mb-12 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+  <div class="bg-gradient-to-r from-indigo-50 to-purple-50 px-6 py-4 border-b border-gray-100">
+    <h2 class="text-xl font-bold text-gray-800">{title}</h2>
+  </div>
+
+  <div class="p-6">
+    <!-- Side-by-side code comparison -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <span class="inline-block bg-indigo-100 text-indigo-700 text-xs font-semibold px-2 py-0.5 rounded-full uppercase">{capitalize(fromLang)}</span>
+        </div>
+        <CodeBlock code={fromEntry.code} language={fromLang} />
+        <p class="mt-2 text-sm text-gray-600">{fromEntry.explanation}</p>
+      </div>
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <span class="inline-block bg-purple-100 text-purple-700 text-xs font-semibold px-2 py-0.5 rounded-full uppercase">{capitalize(toLang)}</span>
+        </div>
+        <CodeBlock code={toEntry.code} language={toLang} />
+        <p class="mt-2 text-sm text-gray-600">{toEntry.explanation}</p>
+      </div>
+    </div>
+
+    <!-- Mental shift -->
+    <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4">
+      <div class="flex items-start gap-2">
+        <span class="text-blue-500 text-lg">💡</span>
+        <div>
+          <p class="text-sm font-semibold text-blue-800 mb-1">Mental Shift</p>
+          <p class="text-sm text-blue-700">{mental_shift}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gotchas -->
+    {gotchas.length > 0 && (
+      <div class="bg-amber-50 border border-amber-200 rounded-xl p-4">
+        <div class="flex items-start gap-2">
+          <span class="text-amber-500 text-lg">⚠️</span>
+          <div>
+            <p class="text-sm font-semibold text-amber-800 mb-2">Gotchas & Pitfalls</p>
+            <ul class="list-disc list-inside space-y-1">
+              {gotchas.map((gotcha) => (
+                <li class="text-sm text-amber-700">{gotcha}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    )}
+  </div>
+</section>

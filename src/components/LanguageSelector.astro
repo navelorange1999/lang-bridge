@@ -1,0 +1,52 @@
+---
+import { capitalize } from '../utils/strings';
+
+interface Props {
+  fromLang: string;
+  toLang: string;
+  availableLanguages: string[];
+}
+
+const { fromLang, toLang, availableLanguages } = Astro.props;
+---
+
+<form method="get" action="/" class="flex flex-wrap items-center gap-3">
+  <div class="flex items-center gap-2">
+    <label for="from" class="text-sm font-medium text-gray-600">From</label>
+    <select
+      id="from"
+      name="from"
+      class="bg-white border border-gray-300 text-gray-800 text-sm rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400"
+    >
+      {availableLanguages.map((lang) => (
+        <option value={lang} selected={lang === fromLang}>{capitalize(lang)}</option>
+      ))}
+    </select>
+  </div>
+
+  <div class="flex items-center gap-1 text-gray-400">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+    </svg>
+  </div>
+
+  <div class="flex items-center gap-2">
+    <label for="to" class="text-sm font-medium text-gray-600">To</label>
+    <select
+      id="to"
+      name="to"
+      class="bg-white border border-gray-300 text-gray-800 text-sm rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400"
+    >
+      {availableLanguages.map((lang) => (
+        <option value={lang} selected={lang === toLang}>{capitalize(lang)}</option>
+      ))}
+    </select>
+  </div>
+
+  <button
+    type="submit"
+    class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2"
+  >
+    Compare
+  </button>
+</form>
