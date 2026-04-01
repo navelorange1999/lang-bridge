@@ -1,0 +1,32 @@
+title: Maps / Dicts
+order: 31
+sections:
+  - id: creation
+    code: |
+      var user = new HashMap<>(Map.of(
+          "name", "Alice",
+          "city", "NYC"
+      ));
+      var counts = new HashMap<String, Integer>();
+  - id: access-existence
+    code: |
+      String name = user.get("name");
+      String city = user.getOrDefault("city", "unknown");
+      boolean hasEmail = user.containsKey("email");
+      int count = counts.getOrDefault("apples", 0);
+  - id: modification-deletion
+    code: |
+      user.put("email", "alice@example.com");
+      user.put("city", "LA");
+      user.remove("city");
+      counts.put("apples", 3);
+      counts.merge("apples", 1, Integer::sum);
+  - id: iteration
+    code: |
+      for (var entry : user.entrySet()) {
+          System.out.printf("%s: %s%n", entry.getKey(), entry.getValue());
+      }
+      var keys = new ArrayList<>(user.keySet());
+      var values = new ArrayList<>(user.values());
+explanation: |
+  Java provides HashMap (O(1) average), TreeMap (sorted, O(log n)), and LinkedHashMap (insertion-ordered). Map.of() creates immutable maps. Use getOrDefault() for safe access with defaults. The merge() method elegantly handles update-or-insert patterns. Iteration uses entrySet() for key-value pairs.

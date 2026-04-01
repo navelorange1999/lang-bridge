@@ -1,0 +1,32 @@
+title: Variables
+order: 1
+sections:
+  - id: declaration
+    code: |
+      int x = 10;
+      String name = "Alice";
+      boolean active = true;
+  - id: multiple-assignment
+    code: |
+      // Java has no multiple assignment — use individual declarations
+      int a = 1, b = 2, c = 3;
+      int x = 10, y = 20;
+      int temp = x; x = y; y = temp;
+  - id: constants
+    code: |
+      static final double PI = 3.14159;
+      static final int MAX_SIZE = 100;
+      enum Status {
+          OK(200),
+          ERROR(500);
+          final int code;
+          Status(int code) { this.code = code; }
+      }
+  - id: type-inference
+    code: |
+      var x = 42;
+      var name = "Alice";
+      var ratio = 3.14;
+      var active = true;
+explanation: |
+  Java requires explicit type declarations or uses var for local type inference (Java 10+). final prevents reassignment but does not make objects immutable. There is no destructuring or multiple assignment — variables must be declared individually. Enums are full classes that can have fields and methods.

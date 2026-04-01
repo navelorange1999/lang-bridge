@@ -1,0 +1,35 @@
+title: Package Management
+order: 61
+sections:
+  - id: init-project
+    lang: shellscript
+    code: |
+      cargo new myapp
+      cargo new mylib --lib
+  - id: add-dependency
+    lang: shellscript
+    code: |
+      cargo add serde --features derive
+      cargo add tokio -F full
+      cargo add reqwest
+  - id: config-file
+    lang: toml
+    code: |
+      # Cargo.toml
+      [package]
+      name = "myapp"
+      version = "0.1.0"
+      edition = "2021"
+
+      [dependencies]
+      serde = { version = "1.0", features = ["derive"] }
+      tokio = { version = "1", features = ["full"] }
+  - id: scripts-tasks
+    lang: shellscript
+    code: |
+      cargo build
+      cargo build --release
+      cargo run
+      cargo test
+explanation: |
+  Cargo is Rust's build system and package manager. Cargo.toml declares metadata and dependencies, and Cargo.lock pins exact versions (always commit it for binaries). Packages are called crates and are published to crates.io. Features are compile-time flags that enable optional functionality. cargo add simplifies editing Cargo.toml directly.

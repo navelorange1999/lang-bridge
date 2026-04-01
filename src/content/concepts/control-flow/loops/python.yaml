@@ -1,0 +1,32 @@
+title: Loops
+order: 11
+sections:
+  - id: for-loop
+    code: |
+      for i in range(5):
+          print(i)
+  - id: while-loop
+    code: |
+      i = 0
+      while i < 5:
+          print(i)
+          i += 1
+  - id: iteration
+    code: |
+      nums = [10, 20, 30]
+      for index, value in enumerate(nums):
+          print(f"{index}: {value}")
+
+      m = {"a": 1, "b": 2}
+      for key, val in m.items():
+          print(f"{key} = {val}")
+  - id: break-continue
+    code: |
+      for i in range(10):
+          if i == 3:
+              continue
+          if i == 7:
+              break
+          print(i)
+explanation: |
+  Python uses for...in for iteration and range() for numeric loops. There is no C-style for loop. Enumerate provides index-value pairs. While loops are separate from for loops, unlike Go.

@@ -1,0 +1,45 @@
+title: Modules & Imports
+order: 22
+sections:
+  - id: defining-module
+    code: |
+      // src/com/example/math/MathUtils.java
+      package com.example.math;
+
+      public class MathUtils {
+          public static int add(int a, int b) { return a + b; }
+          private static void helper() {}  // private = class-only
+      }
+  - id: importing
+    code: |
+      import com.example.math.MathUtils;
+      import java.util.List;
+      import java.util.Map;
+      import static java.lang.Math.sqrt;
+
+      double result = sqrt(16);
+  - id: re-exporting
+    code: |
+      // Java has no re-exporting — use a facade class
+      package com.example.api;
+
+      import com.example.internal.Core;
+      import com.example.internal.Utils;
+
+      public class Api {
+          public static String process(String data) { return Core.process(data); }
+          public static String formatName(String n) { return Utils.formatName(n); }
+      }
+  - id: visibility
+    code: |
+      // public — accessible from anywhere
+      public class Server {
+          public int port;
+          public static final int MAX_RETRIES = 3;
+
+          private String key;       // class-only
+          protected String name;    // class + subclasses + package
+          String host;              // package-private (default)
+      }
+explanation: |
+  Java uses packages for code organization, with directory structure matching the package name. Imports bring classes into scope — static imports allow direct use of static methods. Visibility has four levels: public, protected, package-private (default), and private. Java 9+ modules (module-info.java) add an additional layer of encapsulation between packages.

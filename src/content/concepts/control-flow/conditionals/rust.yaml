@@ -1,0 +1,40 @@
+title: Conditionals
+order: 10
+sections:
+  - id: if-else
+    code: |
+      let grade = if score >= 90 {
+          "A"
+      } else {
+          "B"
+      };
+  - id: else-if-chain
+    code: |
+      let grade = if score >= 90 {
+          "A"
+      } else if score >= 80 {
+          "B"
+      } else if score >= 70 {
+          "C"
+      } else {
+          "F"
+      };
+  - id: ternary-or-inline
+    code: |
+      // if is already an expression, so no ternary needed
+      let status = if age >= 18 { "adult" } else { "minor" };
+  - id: switch-match
+    code: |
+      let delta = match direction {
+          "north" =>  (0,  1),
+          "south" =>  (0, -1),
+          "east"  =>  (1,  0),
+          "west"  => (-1,  0),
+          _       =>  (0,  0),
+      };
+
+      if let Some(value) = optional_value {
+          println!("Got: {}", value);
+      }
+explanation: |
+  In Rust, if and match are expressions that return values. Match must be exhaustive — every possible pattern must be covered. If let provides a concise way to match a single pattern without a full match block.

@@ -1,0 +1,44 @@
+title: Functions
+order: 20
+sections:
+  - id: basic-function
+    code: |
+      std::string greet(const std::string& name) {
+          return "Hello, " + name + "!";
+      }
+  - id: multiple-params
+    code: |
+      int add(int a, int b) {
+          return a + b;
+      }
+
+      std::string formatInfo(const std::string& name, int age, bool active) {
+          return std::format("{} ({}) active={}", name, age, active);
+      }
+  - id: default-params
+    code: |
+      void startServer(int port = 8080, bool verbose = false) {
+          std::cout << "Starting on port " << port << "\n";
+      }
+
+      startServer();
+      startServer(3000, true);
+  - id: multiple-returns
+    code: |
+      std::pair<double, std::string> divide(double a, double b) {
+          if (b == 0) {
+              return {0, "division by zero"};
+          }
+          return {a / b, ""};
+      }
+      auto [result, err] = divide(10, 3);
+  - id: variadic
+    code: |
+      // variadic template (type-safe)
+      template<typename... Args>
+      auto sum(Args... nums) {
+          return (nums + ...);  // fold expression (C++17)
+      }
+      sum(1, 2, 3);
+explanation: |
+  C++ supports default parameter values, but only for trailing parameters. Multiple return values use std::pair, std::tuple, or structured bindings (C++17). Pass large objects by const reference to avoid copies. Variadic templates with fold expressions provide type-safe variadic functions.

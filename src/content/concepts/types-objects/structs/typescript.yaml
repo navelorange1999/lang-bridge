@@ -1,0 +1,49 @@
+title: Structs / Classes
+order: 40
+sections:
+  - id: definition
+    code: |
+      class Animal {
+          constructor(
+              public name: string,
+              public sound: string,
+          ) {}
+      }
+  - id: instantiation
+    code: |
+      const dog = new Animal("Rex", "woof");
+      const cat = new Animal("Whiskers", "meow");
+  - id: methods
+    code: |
+      class Animal {
+          constructor(
+              public name: string,
+              public sound: string,
+          ) {}
+          speak(): string {
+              return `${this.name} says ${this.sound}`;
+          }
+      }
+  - id: composition-embedding
+    code: |
+      class Dog extends Animal {
+          constructor(name: string, public tricks: string[] = []) {
+              super(name, "woof");
+          }
+          fetch(item: string): string {
+              return `${this.name} fetches the ${item}`;
+          }
+      }
+      const rex = new Dog("Rex", ["sit", "shake"]);
+      rex.speak();
+  - id: interfaces-traits
+    code: |
+      interface Speaker {
+          speak(): string;
+      }
+      function announce(s: Speaker): void {
+          console.log(s.speak());
+      }
+      announce(dog);
+explanation: |
+  TypeScript adds access modifiers (public, private, protected) and parameter properties in constructors. Interfaces define structural contracts — any object with matching shape satisfies an interface, no explicit "implements" needed. Abstract classes provide partial implementations. A class can extend one class and implement multiple interfaces.

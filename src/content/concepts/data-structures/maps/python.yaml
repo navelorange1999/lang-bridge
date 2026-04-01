@@ -1,0 +1,28 @@
+title: Maps / Dicts
+order: 31
+sections:
+  - id: creation
+    code: |
+      user = {"name": "Alice", "city": "NYC"}
+      counts: dict[str, int] = {}
+      from_pairs = dict([("a", 1), ("b", 2)])
+  - id: access-existence
+    code: |
+      name = user["name"]
+      city = user.get("city", "unknown")
+      has_email = "email" in user
+      phone = user.get("phone")
+  - id: modification-deletion
+    code: |
+      user["email"] = "alice@example.com"
+      user["city"] = "LA"
+      del user["city"]
+      merged = user | {"theme": "dark"}
+  - id: iteration
+    code: |
+      for key, value in user.items():
+          print(f"{key}: {value}")
+      keys = list(user.keys())
+      values = list(user.values())
+explanation: |
+  Python dicts are ordered (insertion order preserved since 3.7). Use .get(key, default) to avoid KeyError on missing keys. Dict comprehensions provide concise filtering and transformation. The | operator (3.9+) merges dicts with right-side precedence.

@@ -1,0 +1,38 @@
+title: Operators
+order: 3
+sections:
+  - id: arithmetic
+    code: |
+      let x = 10 + 3;     // 13
+      let y = 10 - 3;     // 7
+      let z = 10 * 3;     // 30
+      let d = 10 / 3;     // 3.333... (no integer division)
+      let m = 10 % 3;     // 1
+      let p = 2 ** 3;     // 8 (exponentiation)
+  - id: comparison
+    code: |
+      5 === 5;              // true (strict equality)
+      5 !== "5";            // true (strict inequality)
+      5 == "5";             // avoid: loose equality with coercion
+      null == undefined;    // true (loose only)
+      null === undefined;   // false (strict)
+      NaN === NaN;          // false (use Number.isNaN)
+  - id: logical
+    code: |
+      true && false;             // false
+      true || false;             // true
+      !true;                     // false
+      let name: string | null = null;
+      let display = name ?? "Anonymous";  // nullish coalescing
+      let len = name?.length ?? 0;        // optional chaining
+  - id: assignment
+    code: |
+      let x = 10;
+      x += 5;     // 15
+      x -= 3;     // 12
+      x *= 2;     // 24
+      x /= 4;     // 6
+      x %= 5;     // 1
+      x **= 2;    // 1
+explanation: |
+  TypeScript inherits JavaScript's operators and adds compile-time safety. Always use === over == to avoid type coercion surprises. The nullish coalescing operator (??) only triggers on null/undefined, unlike || which triggers on any falsy value. Optional chaining (?.) safely accesses nested properties without throwing.

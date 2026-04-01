@@ -1,0 +1,32 @@
+title: Maps / Dicts
+order: 31
+sections:
+  - id: creation
+    code: |
+      const user: Record<string, string> = {
+          name: "Alice",
+          city: "NYC",
+      };
+      const counts = new Map<string, number>();
+  - id: access-existence
+    code: |
+      const name = user["name"];
+      const city = user["city"] ?? "unknown";
+      const hasEmail = "email" in user;
+      const count = counts.get("apples") ?? 0;
+  - id: modification-deletion
+    code: |
+      user["email"] = "alice@example.com";
+      user["city"] = "LA";
+      delete user["city"];
+      counts.set("apples", 3);
+      counts.delete("apples");
+  - id: iteration
+    code: |
+      for (const [key, value] of Object.entries(user)) {
+          console.log(`${key}: ${value}`);
+      }
+      const keys = Object.keys(user);
+      const values = Object.values(user);
+explanation: |
+  TypeScript provides Record<K, V> for object types with uniform value types, and Map<K, V> for typed maps. Use the nullish coalescing operator (??) for safe access with defaults. Index signatures define objects with dynamic keys. All JavaScript patterns work but with compile-time type checking.

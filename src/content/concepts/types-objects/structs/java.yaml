@@ -1,0 +1,55 @@
+title: Structs / Classes
+order: 40
+sections:
+  - id: definition
+    code: |
+      class Animal {
+          final String name;
+          final String sound;
+          Animal(String name, String sound) {
+              this.name = name;
+              this.sound = sound;
+          }
+      }
+  - id: instantiation
+    code: |
+      var dog = new Animal("Rex", "woof");
+      var cat = new Animal("Whiskers", "meow");
+  - id: methods
+    code: |
+      class Animal {
+          final String name;
+          final String sound;
+          Animal(String name, String sound) {
+              this.name = name;
+              this.sound = sound;
+          }
+          String speak() {
+              return name + " says " + sound;
+          }
+      }
+  - id: composition-embedding
+    code: |
+      class Dog extends Animal {
+          final List<String> tricks;
+          Dog(String name, List<String> tricks) {
+              super(name, "woof");
+              this.tricks = tricks;
+          }
+          String fetch(String item) {
+              return name + " fetches the " + item;
+          }
+      }
+      var rex = new Dog("Rex", List.of("sit", "shake"));
+      rex.speak();
+  - id: interfaces-traits
+    code: |
+      interface Speaker {
+          String speak();
+      }
+      void announce(Speaker s) {
+          System.out.println(s.speak());
+      }
+      announce(dog);
+explanation: |
+  Java classes support single inheritance with extends and multiple interface implementation with implements. Interfaces define method contracts and can have default implementations (Java 8+). Records (Java 16+) provide concise value classes similar to data classes in other languages. All classes implicitly extend Object.

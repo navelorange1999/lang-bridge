@@ -1,0 +1,54 @@
+title: Modules & Imports
+order: 22
+sections:
+  - id: defining-module
+    code: |
+      // math.h — header file declares the public API
+      #pragma once
+      namespace math {
+          int add(int a, int b);
+      }
+
+      // math.cpp — implementation file
+      #include "math.h"
+      namespace math {
+          int add(int a, int b) { return a + b; }
+          static void helper() {}  // file-local (not exported)
+      }
+  - id: importing
+    code: |
+      #include "math.h"               // project header
+      #include <iostream>              // standard library
+      #include <vector>               // standard library
+
+      using std::cout;                // bring specific name into scope
+      using namespace std::literals;  // for "hello"s string literals
+  - id: re-exporting
+    code: |
+      // api.h — umbrella header for clean public API
+      #pragma once
+      #include "math.h"
+      #include "utils.h"
+      #include "config.h"
+  - id: visibility
+    code: |
+      // public — declared in header file
+      void startServer();
+      extern const int MAX_RETRIES;
+
+      // private — static or anonymous namespace
+      static void loadConfig() {}
+      namespace {
+          void internalHelper() {}
+      }
+
+      class Server {
+      public:
+          int port;
+      private:
+          std::string key;
+      protected:
+          std::string name;
+      };
+explanation: |
+  C++ traditionally uses header files (.h) for declarations and source files (.cpp) for implementations. #include copies the header content into the file. Namespaces prevent name collisions. static functions and anonymous namespaces restrict visibility to the current translation unit. C++20 modules offer a modern alternative to headers with better encapsulation and faster compilation.

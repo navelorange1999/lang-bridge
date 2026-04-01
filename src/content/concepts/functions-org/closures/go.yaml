@@ -1,0 +1,51 @@
+title: Closures
+order: 21
+sections:
+  - id: basic-closure
+    code: |
+      add := func(a, b int) int { return a + b }
+      fmt.Println(add(2, 3))
+
+      func(msg string) {
+          fmt.Println(msg)
+      }("hello")
+  - id: returning-closure
+    code: |
+      func makeCounter() func() int {
+          count := 0
+          return func() int {
+              count++
+              return count
+          }
+      }
+      counter := makeCounter()
+      fmt.Println(counter()) // 1
+      fmt.Println(counter()) // 2
+  - id: closure-mutation
+    code: |
+      total := 0
+      addTo := func(n int) {
+          total += n
+      }
+      addTo(5)
+      addTo(3)
+      fmt.Println(total) // 8
+
+      // goroutine pitfall — capture by argument
+      for i := 0; i < 3; i++ {
+          go func(n int) {
+              fmt.Println(n)
+          }(i)
+      }
+  - id: practical-use
+    code: |
+      func apply(nums []int, fn func(int) int) []int {
+          result := make([]int, len(nums))
+          for i, n := range nums {
+              result[i] = fn(n)
+          }
+          return result
+      }
+      doubled := apply([]int{1, 2, 3}, func(n int) int { return n * 2 })
+explanation: |
+  Go closures capture variables by reference. A common mistake is using a closure in a goroutine inside a loop without passing the loop variable as an argument — all goroutines would share the same variable. Functions are first-class values with explicit type signatures.

@@ -1,0 +1,36 @@
+title: Data Types
+order: 2
+sections:
+  - id: primitives
+    code: |
+      let num: i32 = 42;
+      let pi: f64 = 3.14;
+      let name: &str = "hello";
+      let active: bool = true;
+      let ch: char = 'A';
+  - id: type-checking
+    code: |
+      fn type_of<T>(_: &T) -> &'static str {
+          std::any::type_name::<T>()
+      }
+      println!("{}", type_of(&num));    // "i32"
+      println!("{}", type_of(&name));   // "&str"
+      let val: Box<dyn std::any::Any> = Box::new(42_i32);
+      val.downcast_ref::<i32>().is_some()  // true
+  - id: type-conversion
+    code: |
+      let i: i32 = 42;
+      let f: f64 = i as f64;
+      let s: String = i.to_string();
+      let n: i32 = "42".parse().unwrap();
+      let truncated: i32 = 3.7_f64 as i32;
+  - id: special-values
+    code: |
+      let some_val: Option<i32> = Some(42);
+      let no_val: Option<i32> = None;
+      if let Some(v) = some_val {
+          println!("Got: {}", v);
+      }
+      let fallback = no_val.unwrap_or(0);
+explanation: |
+  Rust has sized numeric types (i32, u64, f64, etc.) with i32 and f64 as defaults. There is no null — Option<T> represents optional values with Some(value) or None. Type checking at runtime is rare since the compiler enforces types. Type conversion uses as for numeric casts and .parse()/.to_string() for string conversions.

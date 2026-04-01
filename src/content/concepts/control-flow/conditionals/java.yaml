@@ -1,0 +1,43 @@
+title: Conditionals
+order: 10
+sections:
+  - id: if-else
+    code: |
+      if (score >= 90) {
+          grade = "A";
+      } else {
+          grade = "B";
+      }
+  - id: else-if-chain
+    code: |
+      if (score >= 90) {
+          grade = "A";
+      } else if (score >= 80) {
+          grade = "B";
+      } else if (score >= 70) {
+          grade = "C";
+      } else {
+          grade = "F";
+      }
+  - id: ternary-or-inline
+    code: |
+      String status = (age >= 18) ? "adult" : "minor";
+  - id: switch-match
+    code: |
+      // switch expression (Java 14+)
+      String result = switch (direction) {
+          case "north" -> "up";
+          case "south" -> "down";
+          default -> "unknown";
+      };
+
+      // pattern matching (Java 21+)
+      String describe(Object obj) {
+          return switch (obj) {
+              case Integer i -> "int: " + i;
+              case String s  -> "str: " + s;
+              default        -> "other";
+          };
+      }
+explanation: |
+  Java supports traditional switch with fall-through and modern switch expressions (Java 14+) with arrow syntax that don't fall through. Pattern matching in switch (Java 21+) allows type-checking and binding in a single step. The ternary operator works like C.

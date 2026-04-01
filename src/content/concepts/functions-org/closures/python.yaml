@@ -1,0 +1,48 @@
+title: Closures
+order: 21
+sections:
+  - id: basic-closure
+    code: |
+      add = lambda a, b: a + b
+      print(add(2, 3))
+
+      greet = lambda name: f"Hello, {name}!"
+  - id: returning-closure
+    code: |
+      def make_counter():
+          count = 0
+          def increment():
+              nonlocal count
+              count += 1
+              return count
+          return increment
+
+      counter = make_counter()
+      print(counter())  # 1
+      print(counter())  # 2
+  - id: closure-mutation
+    code: |
+      def make_accumulator():
+          total = 0
+          def add(n):
+              nonlocal total
+              total += n
+              return total
+          return add
+
+      acc = make_accumulator()
+      acc(5)
+      print(acc(3))  # 8
+
+      # loop capture pitfall — use default arg
+      funcs = [lambda x, i=i: x + i for i in range(3)]
+      print(funcs[1](10))  # 11
+  - id: practical-use
+    code: |
+      nums = [1, 2, 3, 4, 5]
+      doubled = list(map(lambda n: n * 2, nums))
+
+      threshold = 3
+      above = list(filter(lambda n: n > threshold, nums))
+explanation: |
+  Python closures require the nonlocal keyword to modify captured variables. Lambda is limited to a single expression. A common gotcha is late binding in loops — use default arguments (i=i) to capture the current value.

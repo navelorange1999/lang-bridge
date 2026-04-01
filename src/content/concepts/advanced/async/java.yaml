@@ -1,0 +1,40 @@
+title: Async / Concurrency
+order: 60
+sections:
+  - id: basic-async
+    code: |
+      CompletableFuture<String> fetchData(String url) {
+          return CompletableFuture.supplyAsync(() -> {
+              return httpGet(url);
+          });
+      }
+      String data = fetchData("https://example.com").join();
+  - id: chaining
+    code: |
+      CompletableFuture<User> fetchUser(int id) {
+          return CompletableFuture.supplyAsync(() -> httpGetUser(id));
+      }
+      CompletableFuture<List<Post>> fetchUserPosts(int id) {
+          return fetchUser(id)
+              .thenCompose(user -> fetchPosts(user.name()));
+      }
+  - id: concurrent
+    code: |
+      var userFuture = fetchUser(1);
+      var postsFuture = fetchPosts();
+      CompletableFuture.allOf(userFuture, postsFuture).join();
+      var user = userFuture.join();
+      var posts = postsFuture.join();
+      System.out.printf("%s: %d posts%n", user.name(), posts.size());
+  - id: error-handling
+    code: |
+      CompletableFuture<String> safeFetch(String url) {
+          return fetchData(url)
+              .orTimeout(5, TimeUnit.SECONDS)
+              .exceptionally(ex -> {
+                  System.err.println("error: " + ex.getMessage());
+                  return null;
+              });
+      }
+explanation: |
+  Java uses CompletableFuture for async operations with a rich chaining API. thenApply transforms the result, thenCompose chains dependent futures, and allOf waits for multiple futures. Virtual threads (Java 21+) provide lightweight concurrency similar to goroutines. The ExecutorService manages thread pools for parallel task execution.

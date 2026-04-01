@@ -1,0 +1,45 @@
+title: Closures
+order: 21
+sections:
+  - id: basic-closure
+    code: |
+      const add = (a: number, b: number): number => a + b;
+      console.log(add(2, 3));
+
+      const greet = (name: string): string => `Hello, ${name}!`;
+  - id: returning-closure
+    code: |
+      const makeCounter = (): (() => number) => {
+        let count = 0;
+        return () => ++count;
+      };
+
+      const counter = makeCounter();
+      console.log(counter()); // 1
+      console.log(counter()); // 2
+  - id: closure-mutation
+    code: |
+      let total = 0;
+      const addTo = (n: number): void => {
+        total += n;
+      };
+      addTo(5);
+      addTo(3);
+      console.log(total); // 8
+
+      // loop capture — let gives block scope (no pitfall)
+      for (let i = 0; i < 3; i++) {
+        setTimeout(() => console.log(i), 0); // 0, 1, 2
+      }
+  - id: practical-use
+    code: |
+      const nums: number[] = [1, 2, 3, 4, 5];
+      const doubled = nums.map((n) => n * 2);
+
+      const threshold = 3;
+      const above = nums.filter((n) => n > threshold);
+
+      type Callback<T> = (data: T) => void;
+      function onData<T>(url: string, cb: Callback<T>): void { }
+explanation: |
+  TypeScript closures work identically to JavaScript but with type annotations. Arrow functions provide lexical this binding. You can define callback types using type aliases or generics for type-safe closure patterns. Using let in loops avoids the classic var closure pitfall.

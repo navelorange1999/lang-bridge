@@ -1,0 +1,35 @@
+title: Package Management
+order: 61
+sections:
+  - id: init-project
+    lang: shellscript
+    code: |
+      mkdir myapp && cd myapp
+      cmake -B build -S .
+  - id: add-dependency
+    lang: shellscript
+    code: |
+      # Using vcpkg
+      vcpkg install fmt
+      vcpkg install nlohmann-json
+      vcpkg install boost
+  - id: config-file
+    lang: cmake
+    code: |
+      # CMakeLists.txt
+      cmake_minimum_required(VERSION 3.20)
+      project(myapp LANGUAGES CXX)
+      set(CMAKE_CXX_STANDARD 20)
+
+      find_package(fmt CONFIG REQUIRED)
+      add_executable(myapp src/main.cpp)
+      target_link_libraries(myapp PRIVATE fmt::fmt)
+  - id: scripts-tasks
+    lang: shellscript
+    code: |
+      cmake --build build
+      cmake --build build --config Release
+      ./build/myapp
+      ctest --test-dir build
+explanation: |
+  C++ has no single standard package manager. CMake is the most common build system, with vcpkg and Conan as popular package managers. CMakeLists.txt defines the project structure, compiler settings, and dependencies. Unlike npm or cargo, C++ dependency management requires more manual configuration. vcpkg integrates with CMake via toolchain files.

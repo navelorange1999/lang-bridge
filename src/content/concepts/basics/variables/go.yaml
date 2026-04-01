@@ -1,0 +1,29 @@
+title: Variables
+order: 1
+sections:
+  - id: declaration
+    code: |
+      var x int = 10
+      var name string = "Alice"
+      var active bool = true
+  - id: multiple-assignment
+    code: |
+      var a, b, c int = 1, 2, 3
+      x, y := 10, 20
+      x, y = y, x
+  - id: constants
+    code: |
+      const Pi = 3.14159
+      const MaxSize int = 100
+      const (
+          StatusOK    = 200
+          StatusError = 500
+      )
+  - id: type-inference
+    code: |
+      x := 42
+      name := "Alice"
+      ratio := 3.14
+      active := true
+explanation: |
+  Go uses var for explicit declarations and := for short declarations with type inference. Variables must be used after declaration or the compiler errors. Constants are declared with const and must be compile-time values. Go supports multiple assignment and value swapping in a single statement.

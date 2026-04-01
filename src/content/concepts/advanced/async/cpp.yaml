@@ -1,0 +1,46 @@
+title: Async / Concurrency
+order: 60
+sections:
+  - id: basic-async
+    code: |
+      #include <future>
+      std::future<std::string> fetchData(const std::string& url) {
+          return std::async(std::launch::async, [&url]() {
+              return httpGet(url);
+          });
+      }
+      auto data = fetchData("https://example.com").get();
+  - id: chaining
+    code: |
+      std::future<User> fetchUser(int id) {
+          return std::async(std::launch::async, [id]() {
+              return httpGetUser(id);
+          });
+      }
+      auto user = fetchUser(1).get();
+      auto posts = fetchPosts(user.name).get();
+  - id: concurrent
+    code: |
+      auto userFuture = std::async(std::launch::async, fetchUser, 1);
+      auto postsFuture = std::async(std::launch::async, fetchPosts);
+      auto user = userFuture.get();
+      auto posts = postsFuture.get();
+      std::cout << user.name << ": " << posts.size() << " posts\n";
+  - id: error-handling
+    code: |
+      std::optional<std::string> safeFetch(const std::string& url) {
+          try {
+              auto future = std::async(std::launch::async, httpGet, url);
+              auto status = future.wait_for(std::chrono::seconds(5));
+              if (status == std::future_status::timeout) {
+                  std::cerr << "request timed out\n";
+                  return std::nullopt;
+              }
+              return future.get();
+          } catch (const std::exception& e) {
+              std::cerr << "error: " << e.what() << "\n";
+              return std::nullopt;
+          }
+      }
+explanation: |
+  C++ uses std::async and std::future for basic async operations. std::thread provides lower-level thread management. Unlike other languages, C++ has no built-in async/await syntax — std::async launches tasks that return futures. std::future::get() blocks until the result is ready. For more advanced concurrency, libraries like cppcoro provide coroutine support (C++20).

@@ -1,0 +1,35 @@
+title: Data Types
+order: 2
+sections:
+  - id: primitives
+    code: |
+      int num = 42;
+      double pi = 3.14;
+      std::string name = "hello";
+      bool active = true;
+      char ch = 'A';
+  - id: type-checking
+    code: |
+      #include <typeinfo>
+      typeid(num).name();              // "i" (compiler-dependent)
+      std::is_same_v<decltype(num), int>; // true
+      std::is_integral_v<int>;         // true
+      std::is_floating_point_v<double>; // true
+  - id: type-conversion
+    code: |
+      auto s = std::to_string(42);        // "42"
+      auto n = std::stoi("42");           // 42
+      auto f = std::stod("3.14");         // 3.14
+      auto t = static_cast<int>(3.7);     // 3 (truncates)
+      auto d = static_cast<double>(42);   // 42.0
+  - id: special-values
+    code: |
+      int* ptr = nullptr;
+      std::optional<int> maybe = std::nullopt;
+      std::optional<int> some = 42;
+      if (some.has_value()) {
+          std::cout << some.value() << "\n";
+      }
+      int fallback = maybe.value_or(0);
+explanation: |
+  C++ has distinct integer types (int, long, int64_t) and floating-point types (float, double). There is no universal null — nullptr is for pointers only. std::optional (C++17) represents values that may or may not exist. Type checking is mostly compile-time via templates and type traits. Explicit casts use static_cast rather than C-style casts.

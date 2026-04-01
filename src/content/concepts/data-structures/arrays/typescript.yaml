@@ -1,0 +1,35 @@
+title: Arrays / Lists
+order: 30
+sections:
+  - id: creation
+    code: |
+      const nums: number[] = [1, 2, 3, 4, 5];
+      const empty: number[] = [];
+      const names: string[] = ["alice", "bob", "carol"];
+  - id: access-modify
+    code: |
+      const first = nums[0];
+      const last = nums[nums.length - 1];
+      nums[2] = 30;
+  - id: slicing
+    code: |
+      const middle = nums.slice(1, 4);
+      const fromStart = nums.slice(0, 3);
+      const toEnd = nums.slice(2);
+      const copied = [...nums];
+  - id: iteration
+    code: |
+      nums.forEach((n, i) => {
+          console.log(i, n);
+      });
+      const doubled = nums.map(n => n * 2);
+      const evens = nums.filter(n => n % 2 === 0);
+  - id: common-operations
+    code: |
+      nums.push(6);
+      nums.push(7, 8, 9);
+      const combined = [...nums, ...names];
+      const length = nums.length;
+      nums.sort((a, b) => a - b);
+explanation: |
+  TypeScript adds type annotations to JavaScript arrays. Use number[] or Array<number> for typed arrays. Readonly arrays and tuples prevent accidental mutation at compile time. All JavaScript array methods work identically but with type inference. The sort comparator is needed for numeric sorting.

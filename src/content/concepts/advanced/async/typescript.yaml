@@ -1,0 +1,43 @@
+title: Async / Concurrency
+order: 60
+sections:
+  - id: basic-async
+    code: |
+      async function fetchData(url: string): Promise<string> {
+          const res = await fetch(url);
+          return res.text();
+      }
+      const data = await fetchData("https://example.com");
+  - id: chaining
+    code: |
+      async function fetchUser(id: number): Promise<User> {
+          const res = await fetch(`/api/users/${id}`);
+          return res.json() as Promise<User>;
+      }
+      async function fetchUserPosts(id: number): Promise<Post[]> {
+          const user = await fetchUser(id);
+          const res = await fetch(`/api/posts?author=${user.name}`);
+          return res.json() as Promise<Post[]>;
+      }
+  - id: concurrent
+    code: |
+      const [user, posts]: [User, Post[]] = await Promise.all([
+          fetchUser(1),
+          fetchPosts(),
+      ]);
+      console.log(user.name, posts.length);
+  - id: error-handling
+    code: |
+      async function safeFetch(url: string): Promise<string | null> {
+          try {
+              const controller = new AbortController();
+              setTimeout(() => controller.abort(), 5000);
+              const res = await fetch(url, { signal: controller.signal });
+              return res.text();
+          } catch (err) {
+              console.error("request failed:", err);
+              return null;
+          }
+      }
+explanation: |
+  TypeScript async works identically to JavaScript but with typed Promises. async functions return Promise<T> where T is the resolved type. Promise.all infers a tuple type when given a const tuple of Promises. AbortController provides timeout and cancellation support for fetch requests.

@@ -1,0 +1,52 @@
+title: Functions
+order: 20
+sections:
+  - id: basic-function
+    code: |
+      func greet(name string) string {
+          return "Hello, " + name + "!"
+      }
+  - id: multiple-params
+    code: |
+      func add(a, b int) int {
+          return a + b
+      }
+
+      func format(name string, age int, active bool) string {
+          return fmt.Sprintf("%s (%d) active=%t", name, age, active)
+      }
+  - id: default-params
+    code: |
+      // Go has no default parameters — use option structs
+      type Options struct {
+          Port    int
+          Verbose bool
+      }
+
+      func startServer(opts Options) {
+          if opts.Port == 0 {
+              opts.Port = 8080
+          }
+      }
+  - id: multiple-returns
+    code: |
+      func divide(a, b float64) (float64, error) {
+          if b == 0 {
+              return 0, errors.New("division by zero")
+          }
+          return a / b, nil
+      }
+      result, err := divide(10, 3)
+  - id: variadic
+    code: |
+      func sum(nums ...int) int {
+          total := 0
+          for _, n := range nums {
+              total += n
+          }
+          return total
+      }
+      sum(1, 2, 3)
+      sum([]int{1, 2, 3}...)
+explanation: |
+  Go functions can return multiple values, which is the standard pattern for error handling. There are no default parameters — use zero-value checks or option structs instead. Variadic functions use the ... syntax on the last parameter.

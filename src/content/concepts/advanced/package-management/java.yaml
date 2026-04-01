@@ -1,0 +1,49 @@
+title: Package Management
+order: 61
+sections:
+  - id: init-project
+    lang: shellscript
+    code: |
+      # Using Maven
+      mvn archetype:generate -DgroupId=com.example \
+          -DartifactId=myapp -DarchetypeArtifactId=maven-archetype-quickstart
+      # Using Gradle
+      gradle init --type java-application
+  - id: add-dependency
+    lang: xml
+    code: |
+      <!-- pom.xml (Maven) -->
+      <dependency>
+          <groupId>com.google.code.gson</groupId>
+          <artifactId>gson</artifactId>
+          <version>2.10.1</version>
+      </dependency>
+      <dependency>
+          <groupId>org.junit.jupiter</groupId>
+          <artifactId>junit-jupiter</artifactId>
+          <version>5.10.0</version>
+          <scope>test</scope>
+      </dependency>
+  - id: config-file
+    lang: xml
+    code: |
+      <!-- pom.xml -->
+      <project>
+          <modelVersion>4.0.0</modelVersion>
+          <groupId>com.example</groupId>
+          <artifactId>myapp</artifactId>
+          <version>1.0-SNAPSHOT</version>
+          <properties>
+              <maven.compiler.source>21</maven.compiler.source>
+              <maven.compiler.target>21</maven.compiler.target>
+          </properties>
+      </project>
+  - id: scripts-tasks
+    lang: shellscript
+    code: |
+      mvn compile
+      mvn package
+      java -jar target/myapp-1.0-SNAPSHOT.jar
+      mvn test
+explanation: |
+  Java uses Maven or Gradle as build tools and package managers. Maven uses pom.xml (XML-based) for configuration, while Gradle uses build.gradle (Groovy/Kotlin DSL). Dependencies are fetched from Maven Central. Java has a clear separation between compile, test, and runtime scopes for dependencies. The jar command packages compiled classes into a deployable archive.

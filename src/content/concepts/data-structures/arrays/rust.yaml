@@ -1,0 +1,36 @@
+title: Arrays / Lists
+order: 30
+sections:
+  - id: creation
+    code: |
+      let nums: Vec<i32> = vec![1, 2, 3, 4, 5];
+      let empty: Vec<i32> = Vec::with_capacity(10);
+      let names = vec!["alice", "bob", "carol"];
+  - id: access-modify
+    code: |
+      let first = nums[0];
+      let last = nums[nums.len() - 1];
+      let mut nums = nums;
+      nums[2] = 30;
+  - id: slicing
+    code: |
+      let middle: &[i32] = &nums[1..4];
+      let from_start: &[i32] = &nums[..3];
+      let to_end: &[i32] = &nums[2..];
+      let copied = nums.clone();
+  - id: iteration
+    code: |
+      for (i, n) in nums.iter().enumerate() {
+          println!("{i}: {n}");
+      }
+      let doubled: Vec<i32> = nums.iter().map(|n| n * 2).collect();
+      let evens: Vec<i32> = nums.iter().filter(|n| **n % 2 == 0).cloned().collect();
+  - id: common-operations
+    code: |
+      nums.push(6);
+      nums.extend([7, 8, 9]);
+      let combined = [nums.clone(), names_i32].concat();
+      let length = nums.len();
+      nums.sort();
+explanation: |
+  Rust uses Vec<T> for dynamic arrays. Indexing out of bounds panics at runtime — use .get() for safe access returning Option. Iterator adapters like map and filter are lazy — call .collect() to produce a result. Slicing returns a borrowed slice (&[T]), not a new Vec. The .cloned() call converts &T references to owned values.

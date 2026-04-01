@@ -1,0 +1,35 @@
+title: Arrays / Lists
+order: 30
+sections:
+  - id: creation
+    code: |
+      nums = [1, 2, 3, 4, 5]
+      empty: list[int] = []
+      names = ["alice", "bob", "carol"]
+  - id: access-modify
+    code: |
+      first = nums[0]
+      last = nums[-1]
+      nums[2] = 30
+  - id: slicing
+    code: |
+      middle = nums[1:4]
+      from_start = nums[:3]
+      to_end = nums[2:]
+      copied = nums[:]
+      reversed_list = nums[::-1]
+  - id: iteration
+    code: |
+      for i, n in enumerate(nums):
+          print(i, n)
+      doubled = [n * 2 for n in nums]
+      evens = [n for n in nums if n % 2 == 0]
+  - id: common-operations
+    code: |
+      nums.append(6)
+      nums.extend([7, 8, 9])
+      combined = nums + names
+      length = len(nums)
+      nums.sort()
+explanation: |
+  Python lists are dynamic and heterogeneous. Use list comprehensions instead of map/filter for idiomatic code. Slicing with [start:end:step] is powerful and concise. Negative indexing accesses elements from the end. The starred expression (*rest) captures remaining elements during unpacking.

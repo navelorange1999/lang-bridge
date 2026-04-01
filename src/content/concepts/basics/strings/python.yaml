@@ -1,0 +1,38 @@
+title: Strings
+order: 4
+sections:
+  - id: creation
+    code: |
+      greeting = "Hello"
+      name = 'World'
+      combined = greeting + ", " + name + "!"
+      empty = ""
+  - id: interpolation
+    code: |
+      message = f"{greeting}, {name}!"
+      formatted = f"Age: {25}, Score: {98.5:.2f}"
+      debug = f"Value: {42!r}, Type: {type(42).__name__}"
+  - id: common-methods
+    code: |
+      text = "Hello, World!"
+      len(text)                # 13
+      text.upper()             # "HELLO, WORLD!"
+      text.lower()             # "hello, world!"
+      "World" in text          # True
+      text.startswith("He")    # True
+      text.replace("o", "0")   # "Hell0, W0rld!"
+  - id: slicing
+    code: |
+      text = "Hello, World!"
+      text[0:5]      # "Hello"
+      text[-6:]       # "orld!"
+      text[::2]       # "Hlo ol!"
+      text[::-1]      # "!dlroW ,olleH" (reverse)
+  - id: multiline
+    code: |
+      multiline = """Line one
+      Line two
+      Line three"""
+      raw = r"C:\Users\name\file.txt"
+explanation: |
+  Python strings are immutable sequences of Unicode characters. f-strings (f"{}") provide interpolation with format specifiers. Triple quotes allow multiline strings. Slicing with [start:stop:step] is powerful — negative indices count from the end. The r prefix creates raw strings with no escape processing.

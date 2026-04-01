@@ -1,0 +1,33 @@
+title: Data Types
+order: 2
+sections:
+  - id: primitives
+    code: |
+      num = 42
+      pi = 3.14
+      name = "hello"
+      active = True
+      nothing = None
+  - id: type-checking
+    code: |
+      type(num)                  # <class 'int'>
+      type(pi)                   # <class 'float'>
+      isinstance(num, int)       # True
+      isinstance(active, bool)   # True
+      isinstance(num, (int, float))  # multiple types
+  - id: type-conversion
+    code: |
+      str_num = str(42)          # "42"
+      num_str = int("42")        # 42
+      floated = float("3.14")    # 3.14
+      rounded = int(3.7)         # 3 (truncates)
+      as_list = list("abc")      # ["a", "b", "c"]
+  - id: special-values
+    code: |
+      bool(0)       # False
+      bool("")      # False
+      bool(None)    # False
+      bool("hi")    # True
+      bool([])      # False (empty collections are falsy)
+explanation: |
+  Python distinguishes between int and float but has no separate character type. None is the null equivalent. Use type() for exact type and isinstance() for inheritance-aware checks. Type conversion uses the type name as a function. Empty collections and zero-like values are falsy, unlike most other languages.

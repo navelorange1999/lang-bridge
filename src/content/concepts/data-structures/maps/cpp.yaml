@@ -1,0 +1,36 @@
+title: Maps / Dicts
+order: 31
+sections:
+  - id: creation
+    code: |
+      std::unordered_map<std::string, std::string> user = {
+          {"name", "Alice"},
+          {"city", "NYC"},
+      };
+      std::unordered_map<std::string, int> counts;
+  - id: access-existence
+    code: |
+      auto name = user["name"];
+      auto it = user.find("city");
+      std::string city = (it != user.end()) ? it->second : "unknown";
+      bool hasEmail = user.contains("email");  // C++20
+      int count = counts.count("apples");      // 0 or 1
+  - id: modification-deletion
+    code: |
+      user["email"] = "alice@example.com";
+      user["city"] = "LA";
+      user.erase("city");
+      counts["apples"] = 3;
+      counts["apples"]++;
+  - id: iteration
+    code: |
+      for (const auto& [key, value] : user) {
+          std::cout << key << ": " << value << "\n";
+      }
+      // keys and values require manual extraction
+      std::vector<std::string> keys;
+      for (const auto& [k, _] : user) {
+          keys.push_back(k);
+      }
+explanation: |
+  C++ provides std::unordered_map (hash map, O(1) average) and std::map (ordered, O(log n)). Accessing a missing key with [] inserts a default value — use find() or contains() (C++20) to check first. Structured bindings (C++17) make iteration clean. There is no built-in keys() or values() method.

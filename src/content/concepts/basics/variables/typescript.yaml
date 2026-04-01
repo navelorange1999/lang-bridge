@@ -1,0 +1,30 @@
+title: Variables
+order: 1
+sections:
+  - id: declaration
+    code: |
+      let x: number = 10;
+      let name: string = "Alice";
+      let active: boolean = true;
+      var legacy: number = 0;
+  - id: multiple-assignment
+    code: |
+      let [a, b, c] = [1, 2, 3];
+      let [x, y] = [10, 20];
+      [x, y] = [y, x];
+  - id: constants
+    code: |
+      const PI = 3.14159;
+      const MAX_SIZE: number = 100;
+      const enum Status {
+          OK = 200,
+          Error = 500,
+      }
+  - id: type-inference
+    code: |
+      let x = 42;
+      let name = "Alice";
+      let ratio = 3.14;
+      let active = true;
+explanation: |
+  TypeScript uses let for mutable variables and const for constants, adding static type annotations to JavaScript's declarations. Type inference works well — explicit annotations are optional when the type is obvious. Array destructuring enables multiple assignment and swaps. Avoid var in modern code due to its function-scoped hoisting behavior.

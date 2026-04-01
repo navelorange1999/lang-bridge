@@ -1,0 +1,39 @@
+title: Operators
+order: 3
+sections:
+  - id: arithmetic
+    code: |
+      let x = 10 + 3;     // 13
+      let y = 10 - 3;     // 7
+      let z = 10 * 3;     // 30
+      let d = 10 / 3;     // 3 (integer division)
+      let m = 10 % 3;     // 1
+      let p = 1_i32 << 3; // 8 (bitwise shift)
+  - id: comparison
+    code: |
+      println!("{}", 5 == 5);    // true
+      println!("{}", 5 != 3);    // true
+      println!("{}", 5 > 3);     // true
+      println!("{}", 5 <= 5);    // true
+      let a = (1, 2);
+      let b = (1, 2);
+      println!("{}", a == b);    // true (tuples are comparable)
+  - id: logical
+    code: |
+      println!("{}", true && false);   // false
+      println!("{}", true || false);   // true
+      println!("{}", !true);           // false
+      if x > 0 && x < 100 {
+          println!("in range");
+      }
+  - id: assignment
+    code: |
+      let mut x = 10;
+      x += 5;    // 15
+      x -= 3;    // 12
+      x *= 2;    // 24
+      x /= 4;    // 6
+      x %= 5;    // 1
+      x &= 0b11; // bitwise AND assign
+explanation: |
+  Rust has no ternary operator because if/else is an expression that returns a value. Integer division truncates. Logical operators (&&, ||, !) short-circuit. There is no ++ or -- operator — use += 1 instead. Arithmetic on integers panics on overflow in debug mode and wraps in release mode.

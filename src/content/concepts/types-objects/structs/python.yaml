@@ -1,0 +1,42 @@
+title: Structs / Classes
+order: 40
+sections:
+  - id: definition
+    code: |
+      class Animal:
+          def __init__(self, name: str, sound: str):
+              self.name = name
+              self.sound = sound
+  - id: instantiation
+    code: |
+      dog = Animal("Rex", "woof")
+      cat = Animal(name="Whiskers", sound="meow")
+  - id: methods
+    code: |
+      class Animal:
+          def __init__(self, name: str, sound: str):
+              self.name = name
+              self.sound = sound
+          def speak(self) -> str:
+              return f"{self.name} says {self.sound}"
+  - id: composition-embedding
+    code: |
+      class Dog(Animal):
+          def __init__(self, name: str, tricks: list[str] | None = None):
+              super().__init__(name, "woof")
+              self.tricks = tricks or []
+          def fetch(self, item: str) -> str:
+              return f"{self.name} fetches the {item}"
+      rex = Dog("Rex", ["sit", "shake"])
+      rex.speak()
+  - id: interfaces-traits
+    code: |
+      from abc import ABC, abstractmethod
+      class Speaker(ABC):
+          @abstractmethod
+          def speak(self) -> str: ...
+      def announce(s: Speaker):
+          print(s.speak())
+      announce(dog)
+explanation: |
+  Python classes use __init__ for construction and explicit self for instance access. Dataclasses auto-generate __init__, __repr__, and __eq__ from field definitions. Inheritance is specified in parentheses. Abstract base classes define interfaces via the abc module. Python supports multiple inheritance via MRO (method resolution order).

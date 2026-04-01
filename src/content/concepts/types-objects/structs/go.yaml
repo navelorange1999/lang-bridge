@@ -1,0 +1,44 @@
+title: Structs / Classes
+order: 40
+sections:
+  - id: definition
+    code: |
+      type Animal struct {
+          Name  string
+          Sound string
+      }
+  - id: instantiation
+    code: |
+      dog := Animal{Name: "Rex", Sound: "woof"}
+      cat := Animal{"Whiskers", "meow"}
+      empty := Animal{}
+  - id: methods
+    code: |
+      func (a Animal) Speak() string {
+          return fmt.Sprintf("%s says %s", a.Name, a.Sound)
+      }
+      func NewDog(name string) Animal {
+          return Animal{Name: name, Sound: "woof"}
+      }
+  - id: composition-embedding
+    code: |
+      type Dog struct {
+          Animal
+          Tricks []string
+      }
+      rex := Dog{
+          Animal: Animal{Name: "Rex", Sound: "woof"},
+          Tricks: []string{"sit", "shake"},
+      }
+      rex.Speak()
+  - id: interfaces-traits
+    code: |
+      type Speaker interface {
+          Speak() string
+      }
+      func announce(s Speaker) {
+          fmt.Println(s.Speak())
+      }
+      announce(dog)
+explanation: |
+  Go has no classes — use structs with methods attached via receivers. There is no inheritance; use embedding to compose types. Constructor functions (NewX) are a convention, not a language feature. Interfaces are satisfied implicitly — no "implements" keyword. Exported fields start with uppercase.

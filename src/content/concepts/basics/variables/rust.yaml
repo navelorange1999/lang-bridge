@@ -1,0 +1,27 @@
+title: Variables
+order: 1
+sections:
+  - id: declaration
+    code: |
+      let x: i32 = 10;
+      let name: &str = "Alice";
+      let active: bool = true;
+      let mut count: i32 = 0;
+  - id: multiple-assignment
+    code: |
+      let (a, b, c) = (1, 2, 3);
+      let (mut x, mut y) = (10, 20);
+      std::mem::swap(&mut x, &mut y);
+  - id: constants
+    code: |
+      const PI: f64 = 3.14159;
+      const MAX_SIZE: usize = 100;
+      static GREETING: &str = "Hello";
+  - id: type-inference
+    code: |
+      let x = 42;
+      let name = "Alice";
+      let ratio = 3.14;
+      let active = true;
+explanation: |
+  Rust variables are immutable by default — use mut to allow mutation. let declares bindings and const declares compile-time constants (type annotation required). Destructuring tuples enables multiple assignment. The compiler infers types from values in most cases, but explicit annotations are sometimes needed.

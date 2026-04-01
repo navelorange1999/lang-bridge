@@ -1,0 +1,36 @@
+title: Arrays / Lists
+order: 30
+sections:
+  - id: creation
+    code: |
+      var nums = new ArrayList<>(List.of(1, 2, 3, 4, 5));
+      var empty = new ArrayList<Integer>();
+      var names = new ArrayList<>(List.of("alice", "bob", "carol"));
+  - id: access-modify
+    code: |
+      int first = nums.get(0);
+      int last = nums.get(nums.size() - 1);
+      nums.set(2, 30);
+  - id: slicing
+    code: |
+      var middle = new ArrayList<>(nums.subList(1, 4));
+      var fromStart = new ArrayList<>(nums.subList(0, 3));
+      var toEnd = new ArrayList<>(nums.subList(2, nums.size()));
+      var copied = new ArrayList<>(nums);
+  - id: iteration
+    code: |
+      for (int i = 0; i < nums.size(); i++) {
+          System.out.println(i + " " + nums.get(i));
+      }
+      var doubled = nums.stream().map(n -> n * 2).toList();
+      var evens = nums.stream().filter(n -> n % 2 == 0).toList();
+  - id: common-operations
+    code: |
+      nums.add(6);
+      nums.addAll(List.of(7, 8, 9));
+      var combined = new ArrayList<>(nums);
+      combined.addAll(names);
+      int length = nums.size();
+      Collections.sort(nums);
+explanation: |
+  Java uses ArrayList for dynamic lists and arrays (int[]) for fixed-size. ArrayList only holds objects — primitives are auto-boxed (int → Integer). List.of() creates immutable lists. Stream API provides map, filter, and other functional operations. subList returns a view, not a copy — wrap in new ArrayList for independence.

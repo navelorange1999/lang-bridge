@@ -1,0 +1,85 @@
+---
+interface Props {
+  title: string;
+  description: string;
+}
+const { title, description } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en" class="font-sans">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon/favicon.ico" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@chankay/site-shell@2.0.0/dist/tokens.css"
+    />
+    <script type="module">
+      import "https://cdn.jsdelivr.net/npm/@chankay/site-shell@2.0.0/dist/register.js"
+    </script>
+    <script is:inline>
+      // Apply saved theme immediately to prevent flash
+      (function() {
+        const saved = localStorage.getItem('theme');
+        if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+  </head>
+  <body class="bg-background text-foreground min-h-screen">
+    <!-- Sticky navbar -->
+    <div class="sticky top-0 z-50">
+      <chankay-site-shell
+        position="header"
+        site-name="LangBridge"
+      ></chankay-site-shell>
+    </div>
+
+    <slot />
+
+    <!-- Footer -->
+    <chankay-site-shell position="footer"></chankay-site-shell>
+
+    <!-- Override site-shell shadow DOM styles -->
+    <script>
+      function overrideSiteShellStyles() {
+        const logos: HTMLElement[] = [];
+        document.querySelectorAll('chankay-site-shell').forEach(el => {
+          const shadow = el.shadowRoot;
+          if (!shadow) return;
+          const style = document.createElement('style');
+          style.textContent = '.site-shell-container { width: min(1400px, calc(100% - 2rem)) !important; }';
+          shadow.appendChild(style);
+          const logo = shadow.querySelector('.site-shell-brand-logo') as HTMLElement | null;
+          if (logo) logos.push(logo);
+        });
+
+        function applyLogoTheme() {
+          const isDark = document.documentElement.classList.contains('dark');
+          const filter = isDark ? 'invert(1) grayscale(1) brightness(0.81)' : '';
+          logos.forEach(logo => logo.style.filter = filter);
+        }
+
+        applyLogoTheme();
+
+        // Watch for dark class changes on <html>
+        new MutationObserver(applyLogoTheme).observe(document.documentElement, {
+          attributes: true,
+          attributeFilter: ['class'],
+        });
+      }
+      // Run after custom elements are defined
+      if (customElements.get('chankay-site-shell')) {
+        overrideSiteShellStyles();
+      } else {
+        customElements.whenDefined('chankay-site-shell').then(overrideSiteShellStyles);
+      }
+    </script>
+  </body>
+</html>

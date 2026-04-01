@@ -1,0 +1,49 @@
+title: Closures
+order: 21
+sections:
+  - id: basic-closure
+    code: |
+      auto add = [](int a, int b) { return a + b; };
+      std::cout << add(2, 3) << "\n";
+
+      auto greet = [](const std::string& name) {
+          return "Hello, " + name + "!";
+      };
+  - id: returning-closure
+    code: |
+      auto makeCounter() {
+          int count = 0;
+          return [count]() mutable -> int {
+              return ++count;
+          };
+      }
+
+      auto counter = makeCounter();
+      std::cout << counter() << "\n"; // 1
+      std::cout << counter() << "\n"; // 2
+  - id: closure-mutation
+    code: |
+      int total = 0;
+      auto addTo = [&total](int n) {
+          total += n;
+      };
+      addTo(5);
+      addTo(3);
+      std::cout << total << "\n"; // 8
+
+      // capture by value vs reference
+      int x = 10;
+      auto byVal = [x]() { return x; };      // copy of x
+      auto byRef = [&x]() { return x; };     // reference to x
+  - id: practical-use
+    code: |
+      std::vector<int> nums = {1, 2, 3, 4, 5};
+      std::vector<int> doubled(nums.size());
+      std::ranges::transform(nums, doubled.begin(), [](int n) { return n * 2; });
+
+      int threshold = 3;
+      std::vector<int> above;
+      std::ranges::copy_if(nums, std::back_inserter(above),
+          [threshold](int n) { return n > threshold; });
+explanation: |
+  C++ lambdas use a capture list to specify how external variables are accessed: [=] captures all by value, [&] by reference, or individually like [x, &y]. The mutable keyword allows modifying by-value captures. Lambdas are commonly used with STL algorithms. Each lambda has a unique type — use std::function to store them generically.

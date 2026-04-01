@@ -1,0 +1,44 @@
+title: Functions
+order: 20
+sections:
+  - id: basic-function
+    code: |
+      function greet(name: string): string {
+        return `Hello, ${name}!`;
+      }
+
+      const greetArrow = (name: string): string => `Hello, ${name}!`;
+  - id: multiple-params
+    code: |
+      function add(a: number, b: number): number {
+        return a + b;
+      }
+
+      function formatInfo(name: string, age: number, active: boolean): string {
+        return `${name} (${age}) active=${active}`;
+      }
+  - id: default-params
+    code: |
+      function startServer(port: number = 8080, verbose: boolean = false): void {
+        console.log(`Starting on port ${port}`);
+      }
+
+      startServer();
+      startServer(3000, true);
+  - id: multiple-returns
+    code: |
+      function divide(a: number, b: number): [number, string | null] {
+        if (b === 0) {
+          return [0, "division by zero"];
+        }
+        return [a / b, null];
+      }
+      const [result, err] = divide(10, 3);
+  - id: variadic
+    code: |
+      function sum(...nums: number[]): number {
+        return nums.reduce((a, b) => a + b, 0);
+      }
+      sum(1, 2, 3);
+explanation: |
+  TypeScript adds type annotations to function parameters and return values. Default parameters, rest parameters (...args), and destructuring all work like JavaScript but with full type safety. Arrow functions provide a concise syntax and lexical this binding.

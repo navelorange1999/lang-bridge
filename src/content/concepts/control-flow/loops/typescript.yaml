@@ -1,0 +1,39 @@
+title: Loops
+order: 11
+sections:
+  - id: for-loop
+    code: |
+      for (let i = 0; i < 5; i++) {
+        console.log(i);
+      }
+  - id: while-loop
+    code: |
+      let i = 0;
+      while (i < 5) {
+        console.log(i);
+        i++;
+      }
+  - id: iteration
+    code: |
+      const nums = [10, 20, 30];
+      for (const [index, value] of nums.entries()) {
+        console.log(`${index}: ${value}`);
+      }
+
+      const m = new Map([["a", 1], ["b", 2]]);
+      for (const [key, val] of m) {
+        console.log(`${key} = ${val}`);
+      }
+  - id: break-continue
+    code: |
+      for (let i = 0; i < 10; i++) {
+        if (i === 3) {
+          continue;
+        }
+        if (i === 7) {
+          break;
+        }
+        console.log(i);
+      }
+explanation: |
+  TypeScript has C-style for loops, while, do-while, for...of (iterates values), and for...in (iterates keys). Prefer for...of over for...in for arrays. The compiler ensures loop variables are correctly typed.

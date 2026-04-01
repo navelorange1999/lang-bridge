@@ -1,0 +1,38 @@
+title: Arrays / Lists
+order: 30
+sections:
+  - id: creation
+    code: |
+      nums := []int{1, 2, 3, 4, 5}
+      empty := make([]int, 0, 10)
+      names := []string{"alice", "bob", "carol"}
+  - id: access-modify
+    code: |
+      first := nums[0]
+      last := nums[len(nums)-1]
+      nums[2] = 30
+  - id: slicing
+    code: |
+      middle := nums[1:4]
+      fromStart := nums[:3]
+      toEnd := nums[2:]
+      copied := make([]int, len(nums))
+      copy(copied, nums)
+  - id: iteration
+    code: |
+      for i, n := range nums {
+          fmt.Println(i, n)
+      }
+      doubled := make([]int, len(nums))
+      for i, n := range nums {
+          doubled[i] = n * 2
+      }
+  - id: common-operations
+    code: |
+      nums = append(nums, 6)
+      nums = append(nums, 7, 8, 9)
+      combined := append(nums, names...)
+      length := len(nums)
+      sort.Ints(nums)
+explanation: |
+  Go distinguishes between arrays (fixed-size) and slices (dynamic views). You almost always use slices. append returns a new slice header — always reassign the result. There are no built-in map/filter functions; use for-range loops instead. Slice expressions share the underlying array, so modifying a sub-slice affects the original.

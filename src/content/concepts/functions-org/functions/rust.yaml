@@ -1,0 +1,57 @@
+title: Functions
+order: 20
+sections:
+  - id: basic-function
+    code: |
+      fn greet(name: &str) -> String {
+          format!("Hello, {}!", name)
+      }
+  - id: multiple-params
+    code: |
+      fn add(a: i32, b: i32) -> i32 {
+          a + b
+      }
+
+      fn format_info(name: &str, age: u32, active: bool) -> String {
+          format!("{} ({}) active={}", name, age, active)
+      }
+  - id: default-params
+    code: |
+      // Rust has no default parameters — use the builder pattern
+      struct ServerConfig {
+          port: u16,
+          verbose: bool,
+      }
+
+      impl Default for ServerConfig {
+          fn default() -> Self {
+              Self { port: 8080, verbose: false }
+          }
+      }
+
+      fn start_server(config: ServerConfig) { }
+      start_server(ServerConfig { port: 3000, ..Default::default() });
+  - id: multiple-returns
+    code: |
+      fn divide(a: f64, b: f64) -> Result<f64, String> {
+          if b == 0.0 {
+              return Err("division by zero".to_string());
+          }
+          Ok(a / b)
+      }
+      let result = divide(10.0, 3.0);
+  - id: variadic
+    code: |
+      // Rust has no variadic functions — use macros or slices
+      fn sum(nums: &[i32]) -> i32 {
+          nums.iter().sum()
+      }
+      sum(&[1, 2, 3]);
+
+      // or use a macro for variadic-like syntax
+      macro_rules! sum {
+          ($($n:expr),*) => {{ [$($n),*].iter().sum::<i32>() }};
+      }
+      let total = sum!(1, 2, 3);
+explanation: |
+  Rust functions use fn and the last expression without a semicolon is the return value. There are no default parameters or variadic arguments — use Default trait/builder pattern and slices or macros instead. Errors are returned via the Result type.

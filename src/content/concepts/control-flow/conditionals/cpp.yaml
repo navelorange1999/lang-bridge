@@ -1,0 +1,41 @@
+title: Conditionals
+order: 10
+sections:
+  - id: if-else
+    code: |
+      if (score >= 90) {
+          grade = "A";
+      } else {
+          grade = "B";
+      }
+  - id: else-if-chain
+    code: |
+      if (score >= 90) {
+          grade = "A";
+      } else if (score >= 80) {
+          grade = "B";
+      } else if (score >= 70) {
+          grade = "C";
+      } else {
+          grade = "F";
+      }
+  - id: ternary-or-inline
+    code: |
+      std::string status = (age >= 18) ? "adult" : "minor";
+  - id: switch-match
+    code: |
+      switch (direction) {
+      case Direction::North:
+          y += 1; break;
+      case Direction::South:
+          y -= 1; break;
+      default:
+          std::cout << "unknown direction\n";
+      }
+
+      // C++17: init-statement in if
+      if (auto it = m.find("key"); it != m.end()) {
+          std::cout << it->second;
+      }
+explanation: |
+  C++ conditionals follow C syntax with parenthesized conditions. Switch cases fall through by default — always use break (or [[fallthrough]] to be explicit). C++17 added init-statements in if and switch for scoped variable declarations. There is no pattern matching — use if/else chains or visitor patterns for variant types.

@@ -1,0 +1,46 @@
+title: Closures
+order: 21
+sections:
+  - id: basic-closure
+    code: |
+      let add = |a: i32, b: i32| -> i32 { a + b };
+      println!("{}", add(2, 3));
+
+      let greet = |name: &str| format!("Hello, {}!", name);
+  - id: returning-closure
+    code: |
+      fn make_counter() -> impl FnMut() -> i32 {
+          let mut count = 0;
+          move || {
+              count += 1;
+              count
+          }
+      }
+      let mut counter = make_counter();
+      println!("{}", counter()); // 1
+      println!("{}", counter()); // 2
+  - id: closure-mutation
+    code: |
+      let mut total = 0;
+      let mut add_to = |n: i32| {
+          total += n;
+      };
+      add_to(5);
+      add_to(3);
+      drop(add_to);
+      println!("{}", total); // 8
+
+      // move closure transfers ownership
+      let name = String::from("Alice");
+      let greet = move || println!("Hello, {}!", name);
+      greet();
+      // name is no longer accessible here
+  - id: practical-use
+    code: |
+      let nums = vec![1, 2, 3, 4, 5];
+      let doubled: Vec<_> = nums.iter().map(|n| n * 2).collect();
+
+      let threshold = 3;
+      let above: Vec<_> = nums.iter().filter(|&&n| n > threshold).collect();
+explanation: |
+  Rust closures automatically implement one of three traits based on how they capture variables: Fn (immutable borrow), FnMut (mutable borrow), or FnOnce (takes ownership). The move keyword forces ownership transfer into the closure, which is essential when sending closures to other threads.

@@ -1,0 +1,40 @@
+title: Closures
+order: 21
+sections:
+  - id: basic-closure
+    code: |
+      IntBinaryOperator add = (a, b) -> a + b;
+      System.out.println(add.applyAsInt(2, 3));
+
+      Function<String, String> greet = name -> "Hello, " + name + "!";
+  - id: returning-closure
+    code: |
+      static Supplier<Integer> makeCounter() {
+          int[] count = {0};  // effectively final array trick
+          return () -> ++count[0];
+      }
+
+      var counter = makeCounter();
+      System.out.println(counter.get()); // 1
+      System.out.println(counter.get()); // 2
+  - id: closure-mutation
+    code: |
+      // captured variables must be effectively final
+      int[] total = {0};  // use array to work around restriction
+      IntConsumer addTo = n -> total[0] += n;
+      addTo.accept(5);
+      addTo.accept(3);
+      System.out.println(total[0]); // 8
+
+      // AtomicInteger for thread-safe mutation
+      var counter = new AtomicInteger(0);
+      Runnable inc = counter::incrementAndGet;
+  - id: practical-use
+    code: |
+      var nums = List.of(1, 2, 3, 4, 5);
+      var doubled = nums.stream().map(n -> n * 2).toList();
+
+      int threshold = 3;
+      var above = nums.stream().filter(n -> n > threshold).toList();
+explanation: |
+  Java lambdas can only capture effectively final variables — a variable that is never reassigned after initialization. Use single-element arrays or AtomicReference to work around this restriction. Functional interfaces (Supplier, Function, Consumer, etc.) define the lambda's type. Method references (::) provide shorthand for simple lambdas.

@@ -1,0 +1,39 @@
+title: Strings
+order: 4
+sections:
+  - id: creation
+    code: |
+      let greeting: string = "Hello";
+      let name: string = "World";
+      let combined: string = greeting + ", " + name + "!";
+      let empty: string = "";
+  - id: interpolation
+    code: |
+      let message = `${greeting}, ${name}!`;
+      let formatted = `Age: ${25}, Score: ${98.5.toFixed(2)}`;
+      let expr = `Sum: ${2 + 3}, Upper: ${"hi".toUpperCase()}`;
+  - id: common-methods
+    code: |
+      let text: string = "Hello, World!";
+      text.length;                // 13
+      text.toUpperCase();         // "HELLO, WORLD!"
+      text.toLowerCase();         // "hello, world!"
+      text.includes("World");     // true
+      text.startsWith("He");      // true
+      text.replace("o", "0");     // "Hell0, World!" (first only)
+      text.replaceAll("o", "0");  // "Hell0, W0rld!"
+  - id: slicing
+    code: |
+      let text = "Hello, World!";
+      text.slice(0, 5);           // "Hello"
+      text.slice(-6);             // "orld!"
+      text.at(-1);                // "!" (negative index)
+      [...text].reverse().join(""); // "!dlroW ,olleH"
+  - id: multiline
+    code: |
+      let multiline = `Line one
+      Line two
+      Line three`;
+      let escaped = "C:\\Users\\name\\file.txt";
+explanation: |
+  TypeScript strings behave identically to JavaScript at runtime — template literals (backticks) provide interpolation and multiline support. string.length returns UTF-16 code unit count. slice() supports negative indices. replace() only replaces the first match unless you use replaceAll() or a regex with the g flag.

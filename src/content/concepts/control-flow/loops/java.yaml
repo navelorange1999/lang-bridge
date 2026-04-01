@@ -1,0 +1,39 @@
+title: Loops
+order: 11
+sections:
+  - id: for-loop
+    code: |
+      for (int i = 0; i < 5; i++) {
+          System.out.println(i);
+      }
+  - id: while-loop
+    code: |
+      int i = 0;
+      while (i < 5) {
+          System.out.println(i);
+          i++;
+      }
+  - id: iteration
+    code: |
+      var nums = List.of(10, 20, 30);
+      for (int idx = 0; idx < nums.size(); idx++) {
+          System.out.printf("%d: %d%n", idx, nums.get(idx));
+      }
+
+      var m = Map.of("a", 1, "b", 2);
+      for (var entry : m.entrySet()) {
+          System.out.printf("%s = %d%n", entry.getKey(), entry.getValue());
+      }
+  - id: break-continue
+    code: |
+      for (int i = 0; i < 10; i++) {
+          if (i == 3) {
+              continue;
+          }
+          if (i == 7) {
+              break;
+          }
+          System.out.println(i);
+      }
+explanation: |
+  Java has C-style for loops, while, do-while, and enhanced for-each (for-in). The enhanced for loop works on arrays and any Iterable. There is no built-in enumerate — use an index counter. Labeled break and continue allow controlling outer loops from inner ones.

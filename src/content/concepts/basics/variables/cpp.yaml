@@ -1,0 +1,29 @@
+title: Variables
+order: 1
+sections:
+  - id: declaration
+    code: |
+      int x = 10;
+      std::string name = "Alice";
+      bool active = true;
+  - id: multiple-assignment
+    code: |
+      auto [a, b, c] = std::tuple{1, 2, 3};
+      auto [x, y] = std::pair{10, 20};
+      std::swap(x, y);
+  - id: constants
+    code: |
+      constexpr double PI = 3.14159;
+      constexpr int MAX_SIZE = 100;
+      enum class Status {
+          OK = 200,
+          Error = 500,
+      };
+  - id: type-inference
+    code: |
+      auto x = 42;
+      auto name = std::string("Alice");
+      auto ratio = 3.14;
+      auto active = true;
+explanation: |
+  C++ requires explicit type declarations or uses auto for type inference (C++11). constexpr defines compile-time constants, while const prevents modification at runtime. Structured bindings (C++17) enable multiple assignment from tuples and pairs. Variables are uninitialized by default for primitive types — always initialize explicitly to avoid undefined behavior.

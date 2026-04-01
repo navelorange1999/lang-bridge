@@ -1,0 +1,38 @@
+title: Operators
+order: 3
+sections:
+  - id: arithmetic
+    code: |
+      x = 10 + 3     # 13
+      y = 10 - 3     # 7
+      z = 10 * 3     # 30
+      d = 10 / 3     # 3.333... (true division)
+      f = 10 // 3    # 3 (floor division)
+      m = 10 % 3     # 1
+      p = 2 ** 3     # 8 (exponentiation)
+  - id: comparison
+    code: |
+      5 == 5.0       # True (value equality)
+      5 is 5         # True (identity, small ints)
+      [1] == [1]     # True (value equality)
+      [1] is [1]     # False (different objects)
+      x is None      # idiomatic None check
+      1 < 2 < 3      # True (chained comparison)
+  - id: logical
+    code: |
+      True and False       # False
+      True or False        # True
+      not True             # False
+      x = None or "default"    # "default"
+      y = "" or "fallback"     # "fallback" (falsy triggers or)
+  - id: assignment
+    code: |
+      x = 10
+      x += 5     # 15
+      x -= 3     # 12
+      x *= 2     # 24
+      x //= 4    # 6
+      x %= 5     # 1
+      x **= 2    # 1
+explanation: |
+  Python uses == for value equality and is for identity (same object in memory). Always use is for None checks. Division with / always returns a float; use // for floor division. Logical operators use words (and, or, not), not symbols. or returns the first truthy value, making it useful for defaults.

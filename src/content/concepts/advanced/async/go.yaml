@@ -1,0 +1,48 @@
+title: Async / Concurrency
+order: 60
+sections:
+  - id: basic-async
+    code: |
+      ch := make(chan string, 1)
+      go func() {
+          ch <- "hello from goroutine"
+      }()
+      msg := <-ch
+      fmt.Println(msg)
+  - id: chaining
+    code: |
+      func fetchUser(id int) <-chan User {
+          ch := make(chan User, 1)
+          go func() {
+              user := httpGetUser(id)
+              ch <- user
+          }()
+          return ch
+      }
+      user := <-fetchUser(1)
+      posts := <-fetchPosts(user.ID)
+  - id: concurrent
+    code: |
+      var wg sync.WaitGroup
+      urls := []string{"https://a.com", "https://b.com"}
+      for _, url := range urls {
+          wg.Add(1)
+          go func(u string) {
+              defer wg.Done()
+              resp, _ := http.Get(u)
+              fmt.Println(u, resp.StatusCode)
+          }(url)
+      }
+      wg.Wait()
+  - id: error-handling
+    code: |
+      select {
+      case msg := <-ch:
+          fmt.Println("received:", msg)
+      case err := <-errCh:
+          fmt.Println("error:", err)
+      case <-time.After(5 * time.Second):
+          fmt.Println("timeout")
+      }
+explanation: |
+  Go uses goroutines (lightweight green threads launched with the go keyword) and channels for communication. Channels can be buffered or unbuffered. sync.WaitGroup coordinates groups of goroutines. select handles multiple channel operations like a switch statement. Go achieves true parallelism across OS threads managed by its runtime scheduler.

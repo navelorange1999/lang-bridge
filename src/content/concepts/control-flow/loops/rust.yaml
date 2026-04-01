@@ -1,0 +1,39 @@
+title: Loops
+order: 11
+sections:
+  - id: for-loop
+    code: |
+      for i in 0..5 {
+          println!("{}", i);
+      }
+  - id: while-loop
+    code: |
+      let mut i = 0;
+      while i < 5 {
+          println!("{}", i);
+          i += 1;
+      }
+  - id: iteration
+    code: |
+      let nums = vec![10, 20, 30];
+      for (index, value) in nums.iter().enumerate() {
+          println!("{}: {}", index, value);
+      }
+
+      let m = std::collections::HashMap::from([("a", 1), ("b", 2)]);
+      for (key, val) in &m {
+          println!("{} = {}", key, val);
+      }
+  - id: break-continue
+    code: |
+      for i in 0..10 {
+          if i == 3 {
+              continue;
+          }
+          if i == 7 {
+              break;
+          }
+          println!("{}", i);
+      }
+explanation: |
+  Rust uses ranges (0..5) and iterators for for loops. The loop keyword creates an infinite loop that can return a value via break. While loops are separate. All loop forms support break and continue, including labeled breaks for nested loops.

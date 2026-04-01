@@ -1,0 +1,41 @@
+title: Async / Concurrency
+order: 60
+sections:
+  - id: basic-async
+    code: |
+      import asyncio
+      async def fetch_data(url: str) -> str:
+          await asyncio.sleep(1)
+          return f"data from {url}"
+      result = asyncio.run(fetch_data("https://example.com"))
+  - id: chaining
+    code: |
+      async def fetch_user(user_id: int) -> dict:
+          data = await fetch_data(f"/api/users/{user_id}")
+          return json.loads(data)
+      async def fetch_user_posts(user_id: int) -> list:
+          user = await fetch_user(user_id)
+          posts = await fetch_data(f"/api/posts?author={user['name']}")
+          return json.loads(posts)
+  - id: concurrent
+    code: |
+      async def main():
+          user, posts = await asyncio.gather(
+              fetch_user(1),
+              fetch_posts(),
+          )
+          print(user["name"], len(posts))
+      asyncio.run(main())
+  - id: error-handling
+    code: |
+      async def safe_fetch(url: str) -> str | None:
+          try:
+              return await fetch_data(url)
+          except asyncio.TimeoutError:
+              print("request timed out")
+              return None
+          except Exception as e:
+              print(f"error: {e}")
+              return None
+explanation: |
+  Python uses asyncio as its async runtime. async def creates a coroutine, and await suspends until the result is ready. asyncio.gather runs coroutines concurrently on a single thread. asyncio.run() bootstraps the event loop. For CPU-bound parallelism, use multiprocessing or concurrent.futures with ProcessPoolExecutor.

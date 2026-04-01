@@ -1,0 +1,39 @@
+title: Strings
+order: 4
+sections:
+  - id: creation
+    code: |
+      let greeting: &str = "Hello";
+      let name: String = String::from("World");
+      let combined = format!("{}, {}!", greeting, name);
+      let empty = String::new();
+  - id: interpolation
+    code: |
+      let message = format!("{}, {}!", greeting, name);
+      let formatted = format!("Age: {}, Score: {:.2}", 25, 98.5);
+      let debug = format!("Value: {:?}, Type: i32", 42);
+  - id: common-methods
+    code: |
+      let text = String::from("Hello, World!");
+      text.len();                    // 13 (bytes)
+      text.to_uppercase();           // "HELLO, WORLD!"
+      text.to_lowercase();           // "hello, world!"
+      text.contains("World");        // true
+      text.starts_with("He");        // true
+      text.replace("o", "0");        // "Hell0, W0rld!"
+  - id: slicing
+    code: |
+      let text = "Hello, World!";
+      &text[0..5];                       // "Hello" (byte index)
+      text.chars().count();              // 13 (character count)
+      let chars: Vec<char> = text.chars().collect();
+      let sub: String = chars[7..12].iter().collect();
+  - id: multiline
+    code: |
+      let multiline = "Line one\n\
+          Line two\n\
+          Line three";
+      let raw = r"C:\Users\name\file.txt";
+      let raw_hash = r#"She said "hello""#;
+explanation: |
+  Rust has two string types: String (heap-allocated, owned, growable) and &str (borrowed slice). format!() is used for interpolation. String slicing uses byte indices and panics if you slice in the middle of a multi-byte character — use .chars() for safe Unicode iteration. Raw strings (r"" or r#""#) disable escape processing.

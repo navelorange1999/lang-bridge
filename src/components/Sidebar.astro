@@ -1,0 +1,62 @@
+---
+interface ConceptEntry {
+  id: string;
+  data: { title: string; category: string; order: number };
+}
+
+interface Props {
+  concepts: ConceptEntry[];
+}
+
+const CATEGORY_LABELS: Record<string, string> = {
+  'basics': 'Basics',
+  'control-flow': 'Control Flow',
+  'functions-org': 'Functions & Organization',
+  'data-structures': 'Data Structures',
+  'types-objects': 'Types & Objects',
+  'error-handling': 'Error Handling',
+  'advanced': 'Advanced',
+};
+
+const { concepts } = Astro.props;
+
+// Group by category (concepts are already sorted by order from the parent)
+const grouped: { label: string; concepts: ConceptEntry[] }[] = [];
+let currentCategory = '';
+for (const concept of concepts) {
+  if (concept.data.category !== currentCategory) {
+    currentCategory = concept.data.category;
+    grouped.push({
+      label: CATEGORY_LABELS[currentCategory] || currentCategory,
+      concepts: [],
+    });
+  }
+  grouped[grouped.length - 1].concepts.push(concept);
+}
+---
+
+<aside class="w-48 shrink-0 border-r border-border">
+  <nav id="concept-nav" class="sticky top-[var(--navbar-height)] pt-4 pb-6 px-2 max-h-[calc(100vh-var(--navbar-height))] overflow-y-auto">
+    {grouped.map((group, gi) => (
+      <div class:list={[gi > 0 && 'mt-3']}>
+        <span class="block px-2 pt-1 pb-1.5 text-[13px] font-semibold text-foreground select-none">
+          {group.label}
+        </span>
+        {group.concepts.map((concept, i) => (
+          <a
+            href="#"
+            data-concept={concept.id}
+            class:list={[
+              'concept-link block px-2 py-1.5 rounded-md text-[13px] transition-colors',
+              gi === 0 && i === 0
+                ? 'bg-muted text-primary font-medium'
+                : 'text-muted-foreground hover:text-foreground hover:bg-muted',
+            ]}
+          >
+            {concept.data.title}
+          </a>
+        ))}
+      </div>
+    ))}
+  </nav>
+</aside>

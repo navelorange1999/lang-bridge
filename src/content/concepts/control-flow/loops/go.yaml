@@ -1,0 +1,39 @@
+title: Loops
+order: 11
+sections:
+  - id: for-loop
+    code: |
+      for i := 0; i < 5; i++ {
+          fmt.Println(i)
+      }
+  - id: while-loop
+    code: |
+      i := 0
+      for i < 5 {
+          fmt.Println(i)
+          i++
+      }
+  - id: iteration
+    code: |
+      nums := []int{10, 20, 30}
+      for index, value := range nums {
+          fmt.Printf("%d: %d\n", index, value)
+      }
+
+      m := map[string]int{"a": 1, "b": 2}
+      for key, val := range m {
+          fmt.Printf("%s = %d\n", key, val)
+      }
+  - id: break-continue
+    code: |
+      for i := 0; i < 10; i++ {
+          if i == 3 {
+              continue
+          }
+          if i == 7 {
+              break
+          }
+          fmt.Println(i)
+      }
+explanation: |
+  Go only has the for keyword — no while or do-while. Use for without init/post as a while loop, and for {} for an infinite loop. The range keyword iterates over slices, maps, strings, and channels.

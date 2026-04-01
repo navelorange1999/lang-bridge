@@ -1,0 +1,55 @@
+title: Structs / Classes
+order: 40
+sections:
+  - id: definition
+    code: |
+      struct Animal {
+          name: String,
+          sound: String,
+      }
+  - id: instantiation
+    code: |
+      let dog = Animal {
+          name: String::from("Rex"),
+          sound: String::from("woof"),
+      };
+      let cat = Animal {
+          name: "Whiskers".to_string(),
+          sound: "meow".to_string(),
+      };
+  - id: methods
+    code: |
+      impl Animal {
+          fn new(name: &str, sound: &str) -> Self {
+              Animal { name: name.to_string(), sound: sound.to_string() }
+          }
+          fn speak(&self) -> String {
+              format!("{} says {}", self.name, self.sound)
+          }
+      }
+  - id: composition-embedding
+    code: |
+      struct Dog {
+          animal: Animal,
+          tricks: Vec<String>,
+      }
+      let rex = Dog {
+          animal: Animal::new("Rex", "woof"),
+          tricks: vec!["sit".into(), "shake".into()],
+      };
+      rex.animal.speak();
+  - id: interfaces-traits
+    code: |
+      trait Speaker {
+          fn speak(&self) -> String;
+      }
+      impl Speaker for Animal {
+          fn speak(&self) -> String {
+              format!("{} says {}", self.name, self.sound)
+          }
+      }
+      fn announce(s: &impl Speaker) {
+          println!("{}", s.speak());
+      }
+explanation: |
+  Rust uses struct for data and impl blocks for methods. Self refers to the implementing type. Traits define shared behavior (similar to interfaces). There is no inheritance — use traits and composition instead. Derive macros auto-generate common trait implementations like Debug, Clone, and PartialEq.

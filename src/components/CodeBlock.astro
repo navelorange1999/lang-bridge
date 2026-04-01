@@ -1,4 +1,6 @@
 ---
+import { Code } from 'astro:components';
+
 interface Props {
   code: string;
   language: string;
@@ -7,7 +9,9 @@ interface Props {
 const { code, language } = Astro.props;
 ---
 
-<div class="relative">
-  <div class="absolute top-2 right-2 text-xs text-gray-400 uppercase font-mono">{language}</div>
-  <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 pt-8 overflow-x-auto text-sm font-mono leading-relaxed"><code>{code.trim()}</code></pre>
+<div class="flex flex-col h-full">
+  <span class="text-xs uppercase tracking-widest text-muted-foreground font-medium">{language}</span>
+  <div class="mt-2 flex-1 rounded-lg overflow-hidden [&_pre]:!rounded-lg [&_pre]:!p-4 [&_pre]:!text-sm [&_pre]:!leading-relaxed [&_pre]:!h-full">
+    <Code code={code.trim()} lang={language} theme="github-dark" />
+  </div>
 </div>

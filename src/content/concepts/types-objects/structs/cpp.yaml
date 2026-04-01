@@ -1,0 +1,55 @@
+title: Structs / Classes
+order: 40
+sections:
+  - id: definition
+    code: |
+      class Animal {
+      public:
+          std::string name;
+          std::string sound;
+          Animal(std::string name, std::string sound)
+              : name(std::move(name)), sound(std::move(sound)) {}
+      };
+  - id: instantiation
+    code: |
+      Animal dog("Rex", "woof");
+      Animal cat("Whiskers", "meow");
+      auto pet = Animal("Buddy", "bark");
+  - id: methods
+    code: |
+      class Animal {
+      public:
+          std::string name;
+          std::string sound;
+          Animal(std::string name, std::string sound)
+              : name(std::move(name)), sound(std::move(sound)) {}
+          std::string speak() const {
+              return name + " says " + sound;
+          }
+      };
+  - id: composition-embedding
+    code: |
+      class Dog : public Animal {
+      public:
+          std::vector<std::string> tricks;
+          Dog(std::string name, std::vector<std::string> tricks = {})
+              : Animal(std::move(name), "woof"), tricks(std::move(tricks)) {}
+          std::string fetch(const std::string& item) const {
+              return name + " fetches the " + item;
+          }
+      };
+      Dog rex("Rex", {"sit", "shake"});
+      rex.speak();
+  - id: interfaces-traits
+    code: |
+      class Speaker {
+      public:
+          virtual std::string speak() const = 0;
+          virtual ~Speaker() = default;
+      };
+      void announce(const Speaker& s) {
+          std::cout << s.speak() << "\n";
+      }
+      announce(dog);
+explanation: |
+  C++ uses class and struct (identical except default access: private vs public). Constructors use initializer lists for efficient member initialization. Inheritance uses public/protected/private specifiers. Pure virtual functions (= 0) define interfaces. Virtual destructors are essential for safe polymorphic deletion. C++ supports multiple inheritance.

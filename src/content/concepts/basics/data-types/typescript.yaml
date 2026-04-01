@@ -1,0 +1,35 @@
+title: Data Types
+order: 2
+sections:
+  - id: primitives
+    code: |
+      let num: number = 42;
+      let pi: number = 3.14;
+      let name: string = "hello";
+      let active: boolean = true;
+      let nothing: null = null;
+  - id: type-checking
+    code: |
+      typeof num;                     // "number"
+      typeof name;                    // "string"
+      typeof nothing;                 // "object" (JS quirk)
+      Array.isArray([1, 2]);          // true
+      function isString(val: unknown): val is string {
+          return typeof val === "string";
+      }
+  - id: type-conversion
+    code: |
+      let s: string = String(42);          // "42"
+      let n: number = Number("42");        // 42
+      let f: number = parseFloat("3.14");  // 3.14
+      let t: number = Math.trunc(3.7);     // 3
+      let b: boolean = Boolean("");        // false
+  - id: special-values
+    code: |
+      let a: null = null;
+      let b: undefined = undefined;
+      let maybe: string | null = null;
+      let union: string | undefined = undefined;
+      type Optional = string | null | undefined;
+explanation: |
+  TypeScript uses the same runtime types as JavaScript but adds compile-time type annotations. number covers both integers and floats. Both null and undefined exist as distinct types. Union types (string | null) express optional values. Type guards (typeof, custom predicates) narrow types within branches.

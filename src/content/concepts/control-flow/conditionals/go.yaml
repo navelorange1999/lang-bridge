@@ -1,0 +1,52 @@
+title: Conditionals
+order: 10
+sections:
+  - id: if-else
+    code: |
+      if score >= 90 {
+          grade = "A"
+      } else {
+          grade = "B"
+      }
+  - id: else-if-chain
+    code: |
+      if score := getScore(); score >= 90 {
+          grade = "A"
+      } else if score >= 80 {
+          grade = "B"
+      } else if score >= 70 {
+          grade = "C"
+      } else {
+          grade = "F"
+      }
+  - id: ternary-or-inline
+    code: |
+      // Go has no ternary operator — use a helper or if/else
+      func ternary(cond bool, a, b string) string {
+          if cond {
+              return a
+          }
+          return b
+      }
+      status := ternary(age >= 18, "adult", "minor")
+  - id: switch-match
+    code: |
+      switch direction {
+      case "north":
+          y += 1
+      case "south":
+          y -= 1
+      default:
+          fmt.Println("unknown direction")
+      }
+
+      switch {
+      case score >= 90:
+          grade = "A"
+      case score >= 80:
+          grade = "B"
+      default:
+          grade = "C"
+      }
+explanation: |
+  Go's if statement supports an init statement before the condition. Switch cases don't fall through by default — use the fallthrough keyword explicitly if needed. A switch with no condition acts like a clean if/else chain. There is no ternary operator.

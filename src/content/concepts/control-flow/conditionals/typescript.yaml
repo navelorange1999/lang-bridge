@@ -1,0 +1,38 @@
+title: Conditionals
+order: 10
+sections:
+  - id: if-else
+    code: |
+      if (score >= 90) {
+        grade = "A";
+      } else {
+        grade = "B";
+      }
+  - id: else-if-chain
+    code: |
+      function describe(value: string | number): string {
+        if (typeof value === "string") {
+          return value.toUpperCase();
+        } else if (typeof value === "number") {
+          return value.toFixed(2);
+        } else {
+          return String(value);
+        }
+      }
+  - id: ternary-or-inline
+    code: |
+      const status: string = age >= 18 ? "adult" : "minor";
+  - id: switch-match
+    code: |
+      type Shape =
+        | { kind: "circle"; r: number }
+        | { kind: "rect"; w: number; h: number };
+
+      function area(s: Shape): number {
+        switch (s.kind) {
+          case "circle": return Math.PI * s.r ** 2;
+          case "rect":   return s.w * s.h;
+        }
+      }
+explanation: |
+  TypeScript shares JavaScript's if/else, ternary, and switch syntax but adds type narrowing — the compiler automatically refines types inside conditional branches based on type guards like typeof and discriminated unions.

@@ -1,0 +1,40 @@
+title: Strings
+order: 4
+sections:
+  - id: creation
+    code: |
+      std::string greeting = "Hello";
+      std::string name = "World";
+      std::string combined = greeting + ", " + name + "!";
+      std::string empty;
+  - id: interpolation
+    code: |
+      // C++ has no string interpolation — use std::format (C++20)
+      auto message = std::format("{}, {}!", greeting, name);
+      auto formatted = std::format("Age: {}, Score: {:.2f}", 25, 98.5);
+      auto expr = std::format("Sum: {}", 2 + 3);
+  - id: common-methods
+    code: |
+      std::string text = "Hello, World!";
+      text.size();                               // 13
+      std::ranges::for_each(text, [](char& c){ c = std::toupper(c); });
+      text.find("World") != std::string::npos;   // true
+      text.starts_with("He");                    // true (C++20)
+      // replace first occurrence
+      text.replace(text.find("o"), 1, "0");
+  - id: slicing
+    code: |
+      std::string text = "Hello, World!";
+      text.substr(0, 5);            // "Hello"
+      text.substr(7);               // "World!"
+      text.back();                  // '!'
+      std::string rev(text.rbegin(), text.rend());  // reversed
+  - id: multiline
+    code: |
+      std::string multiline = "Line one\n"
+          "Line two\n"
+          "Line three";
+      auto raw = R"(C:\Users\name\file.txt)";
+      auto raw_delim = R"delim(She said "hello")delim";
+explanation: |
+  C++ strings (std::string) are mutable, unlike most other languages. There is no string interpolation syntax — use std::format (C++20) or string streams. Adjacent string literals are concatenated at compile time for multiline strings. Raw string literals (R"(...)") disable escape processing. The size() method returns byte count.

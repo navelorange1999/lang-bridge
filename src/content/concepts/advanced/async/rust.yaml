@@ -1,0 +1,46 @@
+title: Async / Concurrency
+order: 60
+sections:
+  - id: basic-async
+    code: |
+      async fn fetch_data(url: &str) -> Result<String, reqwest::Error> {
+          let body = reqwest::get(url).await?.text().await?;
+          Ok(body)
+      }
+      #[tokio::main]
+      async fn main() {
+          let data = fetch_data("https://example.com").await.unwrap();
+      }
+  - id: chaining
+    code: |
+      async fn fetch_user(id: u64) -> Result<User, reqwest::Error> {
+          let url = format!("https://api.example.com/users/{id}");
+          let user = reqwest::get(&url).await?.json::<User>().await?;
+          Ok(user)
+      }
+      async fn fetch_user_posts(id: u64) -> Result<Vec<Post>, reqwest::Error> {
+          let user = fetch_user(id).await?;
+          let posts = fetch_posts(&user.name).await?;
+          Ok(posts)
+      }
+  - id: concurrent
+    code: |
+      let user_handle = tokio::spawn(fetch_user(1));
+      let posts_handle = tokio::spawn(fetch_posts());
+      let user = user_handle.await.unwrap().unwrap();
+      let posts = posts_handle.await.unwrap().unwrap();
+      println!("{}: {} posts", user.name, posts.len());
+  - id: error-handling
+    code: |
+      async fn safe_fetch(url: &str) -> Option<String> {
+          match tokio::time::timeout(
+              Duration::from_secs(5),
+              fetch_data(url),
+          ).await {
+              Ok(Ok(data)) => Some(data),
+              Ok(Err(e)) => { eprintln!("request error: {e}"); None }
+              Err(_) => { eprintln!("request timed out"); None }
+          }
+      }
+explanation: |
+  Rust async functions return a Future that does nothing until .await is called. An async runtime like tokio polls futures to completion. tokio::spawn runs a future on the runtime's thread pool for true parallelism. The ? operator propagates errors ergonomically in async chains. Rust's ownership system prevents data races at compile time.

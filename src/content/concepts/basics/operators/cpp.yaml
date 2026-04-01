@@ -1,0 +1,39 @@
+title: Operators
+order: 3
+sections:
+  - id: arithmetic
+    code: |
+      int x = 10 + 3;     // 13
+      int y = 10 - 3;     // 7
+      int z = 10 * 3;     // 30
+      int d = 10 / 3;     // 3 (integer division)
+      int m = 10 % 3;     // 1
+      int p = 1 << 3;     // 8 (bitwise shift)
+  - id: comparison
+    code: |
+      std::cout << (5 == 5);     // 1 (true)
+      std::cout << (5 != 3);     // 1 (true)
+      std::cout << (5 > 3);      // 1 (true)
+      std::cout << (5 <= 5);     // 1 (true)
+      std::string a = "hi";
+      std::string b = "hi";
+      std::cout << (a == b);     // 1 (value equality for strings)
+  - id: logical
+    code: |
+      std::cout << (true && false);    // 0
+      std::cout << (true || false);    // 1
+      std::cout << (!true);            // 0
+      if (x > 0 && x < 100) {
+          std::cout << "in range\n";
+      }
+  - id: assignment
+    code: |
+      int x = 10;
+      x += 5;     // 15
+      x -= 3;     // 12
+      x *= 2;     // 24
+      x /= 4;     // 6
+      x %= 5;     // 1
+      x++;         // 2 (also an expression, unlike Go)
+explanation: |
+  C++ uses C-style operators with integer division truncating toward zero. There is no exponentiation operator — use std::pow(). Comparison operators work on primitive types and std::string by value. Logical operators (&&, ||, !) short-circuit. The ++ and -- operators work both as prefix and postfix expressions.

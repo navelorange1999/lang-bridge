@@ -1,0 +1,33 @@
+title: Conditionals
+order: 10
+sections:
+  - id: if-else
+    code: |
+      if score >= 90:
+          grade = "A"
+      else:
+          grade = "B"
+  - id: else-if-chain
+    code: |
+      if score >= 90:
+          grade = "A"
+      elif score >= 80:
+          grade = "B"
+      elif score >= 70:
+          grade = "C"
+      else:
+          grade = "F"
+  - id: ternary-or-inline
+    code: |
+      status = "adult" if age >= 18 else "minor"
+  - id: switch-match
+    code: |
+      match direction:
+          case "north":
+              y += 1
+          case "south":
+              y -= 1
+          case _:
+              print("unknown direction")
+explanation: |
+  Python uses elif instead of else if, and a conditional expression with the form value_if_true if condition else value_if_false. The match statement (3.10+) provides structural pattern matching with a wildcard _ for the default case.

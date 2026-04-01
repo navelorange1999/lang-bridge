@@ -1,0 +1,32 @@
+title: Package Management
+order: 61
+sections:
+  - id: init-project
+    lang: shellscript
+    code: |
+      go mod init github.com/user/myapp
+  - id: add-dependency
+    lang: shellscript
+    code: |
+      go get github.com/gin-gonic/gin@latest
+      go get golang.org/x/sync
+      go mod tidy
+  - id: config-file
+    lang: gomod
+    code: |
+      // go.mod
+      module github.com/user/myapp
+      go 1.22
+      require (
+          github.com/gin-gonic/gin v1.9.1
+          golang.org/x/sync v0.6.0
+      )
+  - id: scripts-tasks
+    lang: shellscript
+    code: |
+      go build -o myapp ./cmd/server
+      go run ./cmd/server
+      go test ./...
+      go install golang.org/x/tools/gopls@latest
+explanation: |
+  Go modules use go.mod to track dependencies and go.sum for cryptographic checksums. go get fetches and records dependencies. Unlike npm, Go downloads modules to a shared cache ($GOPATH/pkg/mod), not a local folder. go mod tidy keeps go.mod clean. There is no separate lockfile — go.sum serves that purpose. Go has no concept of dev dependencies.

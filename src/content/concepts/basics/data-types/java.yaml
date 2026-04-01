@@ -1,0 +1,36 @@
+title: Data Types
+order: 2
+sections:
+  - id: primitives
+    code: |
+      int num = 42;
+      double pi = 3.14;
+      String name = "hello";
+      boolean active = true;
+      char ch = 'A';
+  - id: type-checking
+    code: |
+      Integer.class.getName();         // "java.lang.Integer"
+      name instanceof String;          // true
+      name.getClass().getSimpleName(); // "String"
+      if (obj instanceof String s) {   // pattern matching (Java 16+)
+          System.out.println(s.length());
+      }
+  - id: type-conversion
+    code: |
+      String s = String.valueOf(42);       // "42"
+      int n = Integer.parseInt("42");      // 42
+      double f = Double.parseDouble("3.14"); // 3.14
+      int t = (int) 3.7;                  // 3 (truncates)
+      double d = (double) 42;             // 42.0
+  - id: special-values
+    code: |
+      String nullable = null;
+      Optional<Integer> maybe = Optional.empty();
+      Optional<Integer> some = Optional.of(42);
+      if (some.isPresent()) {
+          System.out.println(some.get());
+      }
+      int fallback = maybe.orElse(0);
+explanation: |
+  Java has primitive types (int, double, boolean, char) and their boxed counterparts (Integer, Double, Boolean, Character). Primitives cannot be null — only reference types can. instanceof checks type at runtime, and pattern matching (Java 16+) combines the check with a variable binding. Optional represents values that may be absent.

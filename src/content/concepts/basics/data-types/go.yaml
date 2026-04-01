@@ -1,0 +1,34 @@
+title: Data Types
+order: 2
+sections:
+  - id: primitives
+    code: |
+      var num int = 42
+      var pi float64 = 3.14
+      var name string = "hello"
+      var active bool = true
+      var b byte = 'A'
+  - id: type-checking
+    code: |
+      import "fmt"
+      fmt.Printf("%T\n", num)      // int
+      fmt.Printf("%T\n", pi)       // float64
+      fmt.Printf("%T\n", name)     // string
+      var i interface{} = 42
+      v, ok := i.(int)             // type assertion
+  - id: type-conversion
+    code: |
+      var i int = 42
+      var f float64 = float64(i)
+      var s string = strconv.Itoa(i)
+      var n, _ = strconv.Atoi("42")
+      var r float64 = float64(int(3.7))
+  - id: special-values
+    code: |
+      var zeroInt int       // 0
+      var zeroStr string    // ""
+      var zeroBool bool     // false
+      var ptr *int          // nil (pointers only)
+      var s []int           // nil (slices, maps, channels)
+explanation: |
+  Go has distinct integer and float types with explicit sizes (int, int32, float64, etc.). There is no implicit type conversion — all casts must be explicit. Uninitialized variables get zero values, not null. Only pointers, slices, maps, channels, interfaces, and functions can be nil.

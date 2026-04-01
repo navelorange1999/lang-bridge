@@ -1,0 +1,33 @@
+title: Package Management
+order: 61
+sections:
+  - id: init-project
+    lang: shellscript
+    code: |
+      python -m venv .venv
+      source .venv/bin/activate
+  - id: add-dependency
+    lang: shellscript
+    code: |
+      pip install requests
+      pip install -e ".[dev]"
+      pip freeze > requirements.txt
+  - id: config-file
+    lang: toml
+    code: |
+      # pyproject.toml
+      [project]
+      name = "myapp"
+      dependencies = ["requests>=2.28"]
+
+      [project.optional-dependencies]
+      dev = ["pytest", "ruff"]
+  - id: scripts-tasks
+    lang: shellscript
+    code: |
+      pip install -r requirements.txt
+      python -m pytest
+      python -m myapp
+      uv pip install requests
+explanation: |
+  Python uses pip to install packages from PyPI. Virtual environments (venv) isolate project dependencies from the system Python. pyproject.toml is the modern configuration standard, replacing setup.py. requirements.txt pins exact versions for reproducibility. Tools like uv and poetry add lockfiles and faster resolution on top of pip.

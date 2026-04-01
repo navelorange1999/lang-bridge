@@ -1,0 +1,52 @@
+title: Modules & Imports
+order: 22
+sections:
+  - id: defining-module
+    code: |
+      # mathutils.py — a module is just a .py file
+      def add(a, b):
+          return a + b
+
+      def _helper():
+          pass  # underscore convention = private
+
+      # package structure
+      # mypackage/
+      #   __init__.py
+      #   core.py
+      #   utils.py
+  - id: importing
+    code: |
+      import math
+      print(math.sqrt(16))
+
+      from os.path import join, exists
+
+      # relative import (inside a package)
+      from . import utils
+      from ..helpers import format_name
+  - id: re-exporting
+    code: |
+      # mypackage/__init__.py — controls the public API
+      from .core import process
+      from .utils import format_name
+
+      __all__ = ["process", "format_name"]
+  - id: visibility
+    code: |
+      # public
+      def start_server():
+          pass
+
+      MAX_RETRIES = 3
+
+      # private by convention (single underscore)
+      def _load_config():
+          pass
+
+      # name-mangled (double underscore, class only)
+      class Server:
+          def __init__(self):
+              self.__secret = "key"
+explanation: |
+  Python modules are .py files. Packages are directories with an __init__.py file (can be empty). Visibility is by convention: a leading underscore signals private. __all__ in __init__.py controls what is exported by from package import *.

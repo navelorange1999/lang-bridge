@@ -1,0 +1,38 @@
+title: Strings
+order: 4
+sections:
+  - id: creation
+    code: |
+      greeting := "Hello"
+      name := "World"
+      combined := greeting + ", " + name + "!"
+      var empty string
+  - id: interpolation
+    code: |
+      message := fmt.Sprintf("%s, %s!", greeting, name)
+      formatted := fmt.Sprintf("Age: %d, Score: %.2f", 25, 98.5)
+      debug := fmt.Sprintf("Value: %v, Type: %T", 42, 42)
+  - id: common-methods
+    code: |
+      str := "Hello, World!"
+      len(str)                       // 13 (bytes)
+      strings.ToUpper(str)           // "HELLO, WORLD!"
+      strings.ToLower(str)           // "hello, world!"
+      strings.Contains(str, "World") // true
+      strings.HasPrefix(str, "He")   // true
+      strings.ReplaceAll(str, "o", "0")
+  - id: slicing
+    code: |
+      str := "Hello, World!"
+      str[0:5]                    // "Hello" (byte slicing)
+      chars := []rune(str)        // convert to Unicode code points
+      string(chars[7:12])         // "World" (safe for Unicode)
+      utf8.RuneCountInString(str) // 13 (character count)
+  - id: multiline
+    code: |
+      multiline := `Line one
+      Line two
+      Line three`
+      raw := `C:\Users\name\file.txt`
+explanation: |
+  Go strings are immutable byte slices, not character arrays. Use fmt.Sprintf for formatting — there are no string interpolation literals. Backtick strings are raw (no escape processing) and support multiline. len() returns byte count, not character count — use utf8.RuneCountInString for Unicode. The strings package provides all common operations.

@@ -1,0 +1,29 @@
+title: Maps / Dicts
+order: 31
+sections:
+  - id: creation
+    code: |
+      use std::collections::HashMap;
+      let mut user = HashMap::new();
+      user.insert("name", "Alice");
+      user.insert("city", "NYC");
+  - id: access-existence
+    code: |
+      let name = user["name"];
+      let city = user.get("city").unwrap_or(&"unknown");
+      let has_email = user.contains_key("email");
+  - id: modification-deletion
+    code: |
+      user.insert("email", "alice@example.com");
+      user.insert("city", "LA");
+      user.remove("city");
+      *user.entry("visits").or_insert(0) += 1;
+  - id: iteration
+    code: |
+      for (key, value) in &user {
+          println!("{key}: {value}");
+      }
+      let keys: Vec<_> = user.keys().collect();
+      let values: Vec<_> = user.values().collect();
+explanation: |
+  Rust's HashMap is in std::collections, not a built-in literal. Use .get() for safe access returning Option<&V>, or index syntax which panics on missing keys. The .entry() API elegantly handles insert-or-update patterns. Iterating with & borrows the map immutably.

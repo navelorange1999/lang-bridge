@@ -1,0 +1,38 @@
+title: Arrays / Lists
+order: 30
+sections:
+  - id: creation
+    code: |
+      std::vector<int> nums = {1, 2, 3, 4, 5};
+      std::vector<int> empty;
+      empty.reserve(10);
+      std::vector<std::string> names = {"alice", "bob", "carol"};
+  - id: access-modify
+    code: |
+      int first = nums[0];
+      int last = nums.back();
+      nums[2] = 30;
+      int safe = nums.at(0);  // bounds-checked, throws on out of range
+  - id: slicing
+    code: |
+      std::vector<int> middle(nums.begin() + 1, nums.begin() + 4);
+      std::vector<int> fromStart(nums.begin(), nums.begin() + 3);
+      std::vector<int> toEnd(nums.begin() + 2, nums.end());
+      std::vector<int> copied = nums;
+  - id: iteration
+    code: |
+      for (size_t i = 0; i < nums.size(); i++) {
+          std::cout << i << " " << nums[i] << "\n";
+      }
+      std::vector<int> doubled(nums.size());
+      std::ranges::transform(nums, doubled.begin(), [](int n) { return n * 2; });
+  - id: common-operations
+    code: |
+      nums.push_back(6);
+      nums.insert(nums.end(), {7, 8, 9});
+      std::vector<int> combined;
+      combined.insert(combined.end(), nums.begin(), nums.end());
+      auto length = nums.size();
+      std::ranges::sort(nums);
+explanation: |
+  C++ uses std::vector for dynamic arrays. Indexing with [] does not bounds-check — use .at() for safety. Slicing requires iterator pairs, not slice syntax. STL algorithms like std::ranges::sort and std::ranges::transform operate on iterators. push_back appends elements. reserve() pre-allocates capacity without changing size.

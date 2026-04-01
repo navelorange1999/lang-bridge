@@ -1,0 +1,45 @@
+title: Modules & Imports
+order: 22
+sections:
+  - id: defining-module
+    code: |
+      // math.ts — each file is a module
+      export function add(a: number, b: number): number {
+        return a + b;
+      }
+
+      export interface Config {
+        debug: boolean;
+        port: number;
+      }
+
+      function helper(): void {}  // not exported = private
+  - id: importing
+    code: |
+      import { add } from "./math";
+      import type { Config } from "./config";
+      import * as utils from "./utils";
+  - id: re-exporting
+    code: |
+      // index.ts — barrel file for clean public API
+      export { add } from "./math";
+      export type { Config } from "./config";
+      export * from "./utils";
+  - id: visibility
+    code: |
+      // module-level: export = public, no export = private
+      export function startServer(): void {}
+      export const MAX_RETRIES = 3;
+
+      function loadConfig(): Config {
+        return { debug: false, port: 8080 };
+      }
+
+      // class-level visibility
+      class Server {
+        public port: number;
+        private key: string;
+        protected name: string;
+      }
+explanation: |
+  TypeScript uses ES module syntax with import/export. Type-only imports (import type) are erased during compilation. Barrel files (index.ts re-exports) organize public APIs. At the module level, only exported items are accessible; at the class level, public/private/protected keywords control access.

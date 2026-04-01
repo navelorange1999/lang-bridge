@@ -1,0 +1,38 @@
+title: Operators
+order: 3
+sections:
+  - id: arithmetic
+    code: |
+      int x = 10 + 3;     // 13
+      int y = 10 - 3;     // 7
+      int z = 10 * 3;     // 30
+      int d = 10 / 3;     // 3 (integer division)
+      int m = 10 % 3;     // 1
+      double p = Math.pow(2, 3); // 8.0
+  - id: comparison
+    code: |
+      System.out.println(5 == 5);       // true (primitives)
+      String a = "hi";
+      String b = "hi";
+      System.out.println(a.equals(b));  // true (value equality)
+      System.out.println(a == b);       // true (interned strings)
+      System.out.println(new String("hi") == new String("hi")); // false!
+  - id: logical
+    code: |
+      System.out.println(true && false);    // false
+      System.out.println(true || false);    // true
+      System.out.println(!true);            // false
+      if (x > 0 && x < 100) {
+          System.out.println("in range");
+      }
+  - id: assignment
+    code: |
+      int x = 10;
+      x += 5;     // 15
+      x -= 3;     // 12
+      x *= 2;     // 24
+      x /= 4;     // 6
+      x %= 5;     // 1
+      x++;         // 2
+explanation: |
+  Java uses == for primitive equality and .equals() for object equality — using == on objects compares references, not values. This is the most common Java pitfall. Integer division truncates. There is no exponentiation operator — use Math.pow(). Logical operators (&&, ||, !) short-circuit.

@@ -1,0 +1,51 @@
+title: Modules & Imports
+order: 22
+sections:
+  - id: defining-module
+    code: |
+      // every file starts with a package declaration
+      package mathutils
+
+      // exported function (uppercase = public)
+      func Add(a, b int) int { return a + b }
+
+      // unexported function (lowercase = package-private)
+      func helper() {}
+  - id: importing
+    code: |
+      import (
+          "fmt"
+          "math"
+          "github.com/user/project/internal/utils"
+      )
+
+      func main() {
+          fmt.Println(math.Sqrt(16))
+          utils.Format("hello")
+      }
+  - id: re-exporting
+    code: |
+      // Go has no re-exporting — expose via wrapper functions
+      package api
+
+      import "github.com/user/project/internal/core"
+
+      func Process(data string) string {
+          return core.Process(data)
+      }
+  - id: visibility
+    code: |
+      package server
+
+      // public — accessible from other packages
+      func StartServer() {}
+      var MaxRetries = 3
+      type Config struct {
+          Port int    // exported field
+          key  string // unexported field
+      }
+
+      // private — only within this package
+      func loadConfig() Config { return Config{} }
+explanation: |
+  Go uses package declarations and import paths (not filenames). Exported names start with an uppercase letter — there is no export keyword. All .go files in the same directory must share the same package name. Third-party imports use full module paths.

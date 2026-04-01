@@ -1,98 +1,240 @@
 ---
 import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Sidebar from '../components/Sidebar.astro';
 import LanguageSelector from '../components/LanguageSelector.astro';
 import ConceptBlock from '../components/ConceptBlock.astro';
 import { capitalize } from '../utils/strings';
 
-// Get all concepts
-const allConcepts = await getCollection('concepts');
+// Get all concept entries (each is {category}/{concept}/{language})
+const allEntries = await getCollection('concepts');
 
-// Get available languages from all concepts
-const languageSet = new Set<string>();
-for (const concept of allConcepts) {
-  for (const lang of Object.keys(concept.data.languages)) {
-    languageSet.add(lang);
-  }
+// Group entries into concepts
+interface ConceptData {
+  id: string;
+  title: string;
+  category: string;
+  order: number;
+  languages: Record<string, { sections: Array<{ id: string; code: string }>; explanation: string }>;
 }
+
+const conceptMap = new Map<string, ConceptData>();
+const languageSet = new Set<string>();
+
+for (const entry of allEntries) {
+  const parts = entry.id.split('/');
+  const category = parts[0];
+  const conceptId = parts[1];
+  const language = parts[2];
+
+  languageSet.add(language);
+
+  if (!conceptMap.has(conceptId)) {
+    conceptMap.set(conceptId, {
+      id: conceptId,
+      title: entry.data.title,
+      category,
+      order: entry.data.order,
+      languages: {},
+    });
+  }
+  conceptMap.get(conceptId)!.languages[language] = {
+    sections: entry.data.sections,
+    explanation: entry.data.explanation,
+  };
+}
+
+const allConcepts = Array.from(conceptMap.values()).sort((a, b) => a.order - b.order);
 const availableLanguages = Array.from(languageSet).sort();
 
-// Read URL params
-const fromLang = Astro.url.searchParams.get('from') || 'javascript';
-const toLang = Astro.url.searchParams.get('to') || 'python';
-
-// Validate languages
-const validFrom = availableLanguages.includes(fromLang) ? fromLang : 'javascript';
-const validTo = availableLanguages.includes(toLang) ? toLang : 'python';
-
-// Filter concepts that have both languages
-const filteredConcepts = allConcepts.filter(
-  (concept) =>
-    concept.data.languages[validFrom] !== undefined &&
-    concept.data.languages[validTo] !== undefined
-);
+// Default languages for initial server render
+const defaultFrom = 'typescript';
+const defaultTo = 'python';
 ---
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LangBridge — {capitalize(validFrom)} → {capitalize(validTo)}</title>
-    <meta name="description" content={`Learn ${capitalize(validTo)} from ${capitalize(validFrom)} with side-by-side syntax comparisons.`} />
-  </head>
-  <body class="bg-gray-50 min-h-screen">
-    <!-- Header -->
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm">
-      <div class="max-w-5xl mx-auto px-4 py-4 flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <a href="/" class="text-2xl font-bold text-indigo-700 hover:text-indigo-800 transition-colors">
-            🌉 LangBridge
-          </a>
-          <p class="text-xs text-gray-500 mt-0.5">Learn a new language from the one you know</p>
-        </div>
-        <LanguageSelector fromLang={validFrom} toLang={validTo} availableLanguages={availableLanguages} />
-      </div>
-    </header>
+<BaseLayout
+  title={`LangBridge — ${capitalize(defaultFrom)} → ${capitalize(defaultTo)}`}
+  description={`Learn programming languages with side-by-side syntax comparisons.`}
+>
+  <div class="max-w-[1400px] w-[calc(100%-2rem)] mx-auto flex min-h-[calc(100vh-var(--navbar-height))]">
+    <Sidebar concepts={allConcepts.map(c => ({ id: c.id, data: { title: c.title, category: c.category, order: c.order } }))} />
 
     <!-- Main content -->
-    <main class="max-w-5xl mx-auto px-4 py-8">
-      {filteredConcepts.length === 0 ? (
-        <div class="text-center py-16">
-          <p class="text-gray-500 text-lg">No concepts available for {capitalize(validFrom)} → {capitalize(validTo)}.</p>
-          <p class="text-gray-400 text-sm mt-2">Try a different language combination.</p>
+    <main class="flex-1 min-w-0">
+      <!-- Sticky toolbar — extends right to viewport edge -->
+      <div class="sticky top-[var(--navbar-height)] z-40 bg-background border-b border-border -mr-[max((100vw-1400px)/2,1rem)] pr-[max((100vw-1400px)/2,1rem)]">
+        <div class="py-2.5 pl-3 pr-3 flex items-center justify-between">
+          <LanguageSelector fromLang={defaultFrom} toLang={defaultTo} availableLanguages={availableLanguages} />
+          <button
+            id="theme-toggle"
+            type="button"
+            class="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            aria-label="Toggle dark mode"
+          >
+            <svg class="theme-icon-sun w-5 h-5 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+            </svg>
+            <svg class="theme-icon-moon w-5 h-5 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
+            </svg>
+          </button>
         </div>
-      ) : (
-        <>
-          <div class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">
-              {capitalize(validFrom)} <span class="text-indigo-500">→</span> {capitalize(validTo)}
-            </h1>
-            <p class="text-gray-500">
-              {filteredConcepts.length} concept{filteredConcepts.length !== 1 ? 's' : ''} available
-            </p>
-          </div>
-
-          {filteredConcepts.map((concept) => (
-            <ConceptBlock
-              title={concept.data.title}
-              fromLang={validFrom}
-              toLang={validTo}
-              fromEntry={concept.data.languages[validFrom]}
-              toEntry={concept.data.languages[validTo]}
-              mental_shift={concept.data.mental_shift}
-              gotchas={concept.data.gotchas}
-            />
-          ))}
-        </>
-      )}
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-white border-t border-gray-200 mt-16">
-      <div class="max-w-5xl mx-auto px-4 py-6 flex flex-wrap justify-between items-center gap-4 text-sm text-gray-500">
-        <p>🌉 LangBridge — Mental model translator for programmers</p>
-        <p>MIT License</p>
       </div>
-    </footer>
-  </body>
-</html>
+
+      <div class="py-8 pl-3">
+        {allConcepts.map((concept, i) => (
+          <div class="concept-panel" data-concept={concept.id} style={i === 0 ? '' : 'display:none'}>
+            <ConceptBlock
+              title={concept.title}
+              fromLang={defaultFrom}
+              toLang={defaultTo}
+              languages={concept.languages}
+            />
+          </div>
+        ))}
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function initApp() {
+      const nav = document.getElementById('concept-nav');
+      const fromSelect = document.getElementById('lang-from') as HTMLSelectElement | null;
+      const toSelect = document.getElementById('lang-to') as HTMLSelectElement | null;
+      if (!nav || !fromSelect || !toSelect) return;
+
+      const ACTIVE = 'bg-muted text-primary';
+      const INACTIVE = 'text-muted-foreground hover:text-foreground hover:bg-muted';
+
+      // --- Language switching ---
+      function disableSameLanguageOptions() {
+        const fromVal = fromSelect!.value;
+        const toVal = toSelect!.value;
+        for (const opt of fromSelect!.options) {
+          opt.disabled = opt.value === toVal;
+        }
+        for (const opt of toSelect!.options) {
+          opt.disabled = opt.value === fromVal;
+        }
+      }
+
+      function switchLanguages(fromLang: string, toLang: string) {
+        // Update code block visibility
+        document.querySelectorAll<HTMLElement>('.code-section[data-side="from"]').forEach((el) => {
+          el.style.display = el.dataset.lang === fromLang ? '' : 'none';
+        });
+        document.querySelectorAll<HTMLElement>('.code-section[data-side="to"]').forEach((el) => {
+          el.style.display = el.dataset.lang === toLang ? '' : 'none';
+        });
+        // Update labels
+        document.querySelectorAll<HTMLElement>('.lang-label[data-side="from"]').forEach((el) => {
+          el.textContent = fromLang;
+        });
+        document.querySelectorAll<HTMLElement>('.lang-label[data-side="to"]').forEach((el) => {
+          el.textContent = toLang;
+        });
+        disableSameLanguageOptions();
+      }
+
+      function updateUrlAndSwitch() {
+        const fromLang = fromSelect!.value;
+        const toLang = toSelect!.value;
+        switchLanguages(fromLang, toLang);
+        const url = new URL(location.href);
+        url.searchParams.set('from', fromLang);
+        url.searchParams.set('to', toLang);
+        history.replaceState(null, '', url.toString());
+      }
+
+      fromSelect.addEventListener('change', updateUrlAndSwitch);
+      toSelect.addEventListener('change', updateUrlAndSwitch);
+
+      // Read initial languages from URL params
+      const params = new URLSearchParams(location.search);
+      const urlFrom = params.get('from');
+      const urlTo = params.get('to');
+      if (urlFrom && fromSelect.querySelector(`option[value="${urlFrom}"]`)) {
+        fromSelect.value = urlFrom;
+      }
+      if (urlTo && toSelect.querySelector(`option[value="${urlTo}"]`)) {
+        toSelect.value = urlTo;
+      }
+      // If URL params result in same language on both sides, reset to defaults
+      if (fromSelect.value === toSelect.value) {
+        fromSelect.value = 'typescript';
+        toSelect.value = 'python';
+      }
+      switchLanguages(fromSelect.value, toSelect.value);
+
+      // --- Concept navigation ---
+      function switchConcept(id: string) {
+        document.querySelectorAll('.concept-panel').forEach((el) => {
+          (el as HTMLElement).style.display = el.getAttribute('data-concept') === id ? '' : 'none';
+        });
+        nav.querySelectorAll('.concept-link').forEach((link) => {
+          const isActive = link.getAttribute('data-concept') === id;
+          ACTIVE.split(' ').forEach((c) => link.classList.toggle(c, isActive));
+          INACTIVE.split(' ').forEach((c) => link.classList.toggle(c, !isActive));
+        });
+      }
+
+      const initialConcept = params.get('concept');
+      if (initialConcept && document.querySelector(`.concept-panel[data-concept="${initialConcept}"]`)) {
+        switchConcept(initialConcept);
+      }
+
+      nav.addEventListener('click', (e) => {
+        const link = (e.target as HTMLElement).closest('.concept-link');
+        if (!link) return;
+        e.preventDefault();
+        const id = link.getAttribute('data-concept');
+        if (!id) return;
+        switchConcept(id);
+        const url = new URL(location.href);
+        url.searchParams.set('concept', id);
+        history.pushState(null, '', url.toString());
+      });
+
+      window.addEventListener('popstate', () => {
+        const p = new URLSearchParams(location.search);
+        const id = p.get('concept');
+        if (id) switchConcept(id);
+        const pFrom = p.get('from');
+        const pTo = p.get('to');
+        if (pFrom && fromSelect.querySelector(`option[value="${pFrom}"]`)) {
+          fromSelect.value = pFrom;
+        }
+        if (pTo && toSelect.querySelector(`option[value="${pTo}"]`)) {
+          toSelect.value = pTo;
+        }
+        switchLanguages(fromSelect.value, toSelect.value);
+      });
+    }
+
+    initApp();
+
+    function initThemeToggle() {
+      const btn = document.getElementById('theme-toggle');
+      if (!btn) return;
+
+      const sunIcon = btn.querySelector('.theme-icon-sun') as HTMLElement;
+      const moonIcon = btn.querySelector('.theme-icon-moon') as HTMLElement;
+
+      function updateIcons() {
+        const isDark = document.documentElement.classList.contains('dark');
+        sunIcon.style.display = isDark ? 'block' : 'none';
+        moonIcon.style.display = isDark ? 'none' : 'block';
+      }
+
+      btn.addEventListener('click', () => {
+        const isDark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        updateIcons();
+      });
+
+      updateIcons();
+    }
+
+    initThemeToggle();
+  </script>
+</BaseLayout>

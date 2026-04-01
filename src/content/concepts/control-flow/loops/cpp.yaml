@@ -1,0 +1,39 @@
+title: Loops
+order: 11
+sections:
+  - id: for-loop
+    code: |
+      for (int i = 0; i < 5; i++) {
+          std::cout << i << "\n";
+      }
+  - id: while-loop
+    code: |
+      int i = 0;
+      while (i < 5) {
+          std::cout << i << "\n";
+          i++;
+      }
+  - id: iteration
+    code: |
+      std::vector<int> nums = {10, 20, 30};
+      for (size_t i = 0; i < nums.size(); i++) {
+          std::cout << i << ": " << nums[i] << "\n";
+      }
+
+      std::map<std::string, int> m = {{"a", 1}, {"b", 2}};
+      for (const auto& [key, val] : m) {
+          std::cout << key << " = " << val << "\n";
+      }
+  - id: break-continue
+    code: |
+      for (int i = 0; i < 10; i++) {
+          if (i == 3) {
+              continue;
+          }
+          if (i == 7) {
+              break;
+          }
+          std::cout << i << "\n";
+      }
+explanation: |
+  C++ has C-style for loops, while, do-while, and range-based for (for-each). Structured bindings (C++17) enable unpacking in range-based for loops over maps and pairs. There is no built-in enumerate — use an index counter or ranges::views::enumerate (C++23).

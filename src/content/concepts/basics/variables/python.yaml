@@ -1,0 +1,29 @@
+title: Variables
+order: 1
+sections:
+  - id: declaration
+    code: |
+      x = 10
+      name = "Alice"
+      active = True
+  - id: multiple-assignment
+    code: |
+      a, b, c = 1, 2, 3
+      x, y = 10, 20
+      x, y = y, x
+  - id: constants
+    code: |
+      PI = 3.14159
+      MAX_SIZE = 100
+      from enum import IntEnum
+      class Status(IntEnum):
+          OK = 200
+          ERROR = 500
+  - id: type-inference
+    code: |
+      x = 42
+      name = "Alice"
+      ratio = 3.14
+      active = True
+explanation: |
+  Python variables require no declaration keyword or type annotation. Types are inferred at runtime (dynamic typing). There is no true constant keyword — UPPER_CASE naming is a convention. Multiple assignment and tuple unpacking make swaps and parallel assignment concise.

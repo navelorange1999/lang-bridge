@@ -1,0 +1,40 @@
+title: Strings
+order: 4
+sections:
+  - id: creation
+    code: |
+      String greeting = "Hello";
+      String name = "World";
+      String combined = greeting + ", " + name + "!";
+      String empty = "";
+  - id: interpolation
+    code: |
+      // Java has no string interpolation — use String.format or STR (preview)
+      String message = String.format("%s, %s!", greeting, name);
+      String formatted = String.format("Age: %d, Score: %.2f", 25, 98.5);
+      String expr = "Sum: " + (2 + 3);
+  - id: common-methods
+    code: |
+      String text = "Hello, World!";
+      text.length();                  // 13
+      text.toUpperCase();             // "HELLO, WORLD!"
+      text.toLowerCase();             // "hello, world!"
+      text.contains("World");         // true
+      text.startsWith("He");          // true
+      text.replace("o", "0");         // "Hell0, W0rld!" (all occurrences)
+  - id: slicing
+    code: |
+      String text = "Hello, World!";
+      text.substring(0, 5);           // "Hello"
+      text.substring(7);              // "World!"
+      text.charAt(text.length() - 1); // '!'
+      new StringBuilder(text).reverse().toString(); // reversed
+  - id: multiline
+    code: |
+      String multiline = """
+              Line one
+              Line two
+              Line three""";
+      String escaped = "C:\\Users\\name\\file.txt";
+explanation: |
+  Java strings are immutable objects. String concatenation with + creates new objects — use StringBuilder for loops. Text blocks (triple quotes, Java 13+) support multiline strings with automatic indentation stripping. There is no raw string syntax. String.format uses printf-style format specifiers.

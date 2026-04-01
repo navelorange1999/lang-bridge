@@ -1,0 +1,36 @@
+title: Maps / Dicts
+order: 31
+sections:
+  - id: creation
+    code: |
+      user := map[string]string{
+          "name": "Alice",
+          "city": "NYC",
+      }
+      counts := make(map[string]int)
+  - id: access-existence
+    code: |
+      name := user["name"]
+      missing := user["phone"]
+      city, ok := user["city"]
+      if !ok {
+          city = "unknown"
+      }
+  - id: modification-deletion
+    code: |
+      user["email"] = "alice@example.com"
+      user["city"] = "LA"
+      delete(user, "city")
+      counts["apples"] = 3
+      counts["apples"]++
+  - id: iteration
+    code: |
+      for key, value := range user {
+          fmt.Printf("%s: %s\n", key, value)
+      }
+      keys := make([]string, 0, len(user))
+      for k := range user {
+          keys = append(keys, k)
+      }
+explanation: |
+  Go maps are built-in reference types with map[K]V syntax. The comma-ok idiom distinguishes between a missing key and a zero value. Use make to create empty maps. delete removes entries. Iteration order is intentionally randomized by the runtime.

@@ -1,0 +1,37 @@
+title: Package Management
+order: 61
+sections:
+  - id: init-project
+    lang: shellscript
+    code: |
+      npm init -y
+      npm install -D typescript
+      npx tsc --init
+  - id: add-dependency
+    lang: shellscript
+    code: |
+      npm install express
+      npm install -D @types/express
+      npm install -D vitest
+  - id: config-file
+    lang: json
+    code: |
+      // tsconfig.json
+      {
+        "compilerOptions": {
+          "strict": true,
+          "target": "ES2022",
+          "module": "NodeNext",
+          "outDir": "dist"
+        },
+        "include": ["src"]
+      }
+  - id: scripts-tasks
+    lang: shellscript
+    code: |
+      npx tsc
+      node dist/index.js
+      npx tsx src/index.ts
+      npm test
+explanation: |
+  TypeScript uses the same npm/pnpm/yarn tooling as JavaScript, plus tsconfig.json for compiler options. Many libraries ship their own types, but for those that do not, @types/* packages from DefinitelyTyped provide type stubs. Tools like tsx and ts-node run TypeScript directly without a separate compile step.

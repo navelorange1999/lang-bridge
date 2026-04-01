@@ -1,0 +1,42 @@
+title: Functions
+order: 20
+sections:
+  - id: basic-function
+    code: |
+      def greet(name):
+          return f"Hello, {name}!"
+  - id: multiple-params
+    code: |
+      def add(a, b):
+          return a + b
+
+      def format_info(name, age, active):
+          return f"{name} ({age}) active={active}"
+  - id: default-params
+    code: |
+      def start_server(port=8080, verbose=False):
+          print(f"Starting on port {port}")
+
+      start_server()
+      start_server(port=3000, verbose=True)
+  - id: multiple-returns
+    code: |
+      def divide(a, b):
+          if b == 0:
+              return None, "division by zero"
+          return a / b, None
+
+      result, err = divide(10, 3)
+  - id: variadic
+    code: |
+      def total(*nums):
+          return sum(nums)
+
+      total(1, 2, 3)
+
+      def config(**kwargs):
+          for key, value in kwargs.items():
+              print(f"{key} = {value}")
+      config(port=8080, debug=True)
+explanation: |
+  Python uses def for functions with optional type hints. Default parameters are built into the syntax. Multiple returns use tuple unpacking. *args collects positional arguments and **kwargs collects keyword arguments.

@@ -1,0 +1,39 @@
+title: Modules & Imports
+order: 22
+sections:
+  - id: defining-module
+    code: |
+      // in lib.rs or main.rs — declare modules
+      mod math;       // loads from math.rs or math/mod.rs
+      pub mod utils;  // public module
+
+      // math.rs — define items in the module
+      pub fn add(a: i32, b: i32) -> i32 { a + b }
+      fn helper() {}  // private by default
+  - id: importing
+    code: |
+      use crate::math::add;
+      use std::collections::HashMap;
+      use std::io::{self, Read, Write};
+  - id: re-exporting
+    code: |
+      // lib.rs — re-export items for a clean public API
+      mod internal;
+
+      pub use internal::process;
+      pub use internal::utils::format_name;
+  - id: visibility
+    code: |
+      pub fn start_server() {}
+      pub const MAX_RETRIES: u32 = 3;
+
+      pub struct Config {
+          pub port: u16,           // public field
+          pub(crate) key: String,  // visible within crate only
+      }
+
+      fn load_config() -> Config {
+          Config { port: 8080, key: "secret".into() }
+      }
+explanation: |
+  Rust uses mod to declare modules and use to bring items into scope. Visibility is private by default — use pub to export. The module tree is explicit: mod declarations in parent files control what modules exist. pub(crate) restricts visibility to the current crate.

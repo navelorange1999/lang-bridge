@@ -1,0 +1,49 @@
+title: Functions
+order: 20
+sections:
+  - id: basic-function
+    code: |
+      String greet(String name) {
+          return "Hello, " + name + "!";
+      }
+  - id: multiple-params
+    code: |
+      int add(int a, int b) {
+          return a + b;
+      }
+
+      String formatInfo(String name, int age, boolean active) {
+          return String.format("%s (%d) active=%b", name, age, active);
+      }
+  - id: default-params
+    code: |
+      // Java has no default parameters — use overloading
+      void startServer() {
+          startServer(8080, false);
+      }
+      void startServer(int port, boolean verbose) {
+          System.out.println("Starting on port " + port);
+      }
+
+      startServer();
+      startServer(3000, true);
+  - id: multiple-returns
+    code: |
+      // Java can only return one value — use a record (Java 16+)
+      record DivResult(double value, String error) {}
+
+      DivResult divide(double a, double b) {
+          if (b == 0) {
+              return new DivResult(0, "division by zero");
+          }
+          return new DivResult(a / b, null);
+      }
+      var result = divide(10, 3);
+  - id: variadic
+    code: |
+      int sum(int... nums) {
+          return java.util.Arrays.stream(nums).sum();
+      }
+      sum(1, 2, 3);
+explanation: |
+  Java methods must be defined inside a class. There are no default parameters — use method overloading instead. Only one value can be returned — use records (Java 16+) or custom classes for multiple values. Varargs (...) must be the last parameter and are received as an array.
