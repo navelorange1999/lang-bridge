@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@astrojs/tailwind": "^6.0.2",
-    "@chankay/brand-assets": "file:../www.chankay.com/packages/brand-assets",
-    "@chankay/site-shell": "file:../www.chankay.com/packages/site-shell",
+    "@chankay/brand-assets": "^1.0.0",
+    "@chankay/site-shell": "^2.0.0",
     "astro": "^5.18.1",
     "js-yaml": "^4.1.0",
     "tailwindcss": "^3.4.1"

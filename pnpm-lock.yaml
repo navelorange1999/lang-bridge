@@ -12,11 +12,11 @@ importers:
         specifier: ^6.0.2
         version: 6.0.2(astro@5.18.1(jiti@1.21.7)(rollup@4.60.0)(typescript@5.9.3)(yaml@2.8.3))(tailwindcss@3.4.19(yaml@2.8.3))
       '@chankay/brand-assets':
-        specifier: file:../www.chankay.com/packages/brand-assets
-        version: file:../www.chankay.com/packages/brand-assets
+        specifier: ^1.0.0
+        version: 1.0.0
       '@chankay/site-shell':
-        specifier: file:../www.chankay.com/packages/site-shell
-        version: file:../www.chankay.com/packages/site-shell
+        specifier: ^2.0.0
+        version: 2.0.0
       astro:
         specifier: ^5.18.1
         version: 5.18.1(jiti@1.21.7)(rollup@4.60.0)(typescript@5.9.3)(yaml@2.8.3)
@@ -84,11 +84,11 @@ packages:
     resolution: {integrity: sha512-VERIM64vtTP1C4mxQ5thVT9fK0apjPFobqybMtA1UdUujWka24ERHbRHFGmpbbhp73MhV+KSsHQH9C6uOTdEQA==}
     engines: {node: '>=18'}
 
-  '@chankay/brand-assets@file:../www.chankay.com/packages/brand-assets':
-    resolution: {directory: ../www.chankay.com/packages/brand-assets, type: directory}
+  '@chankay/brand-assets@1.0.0':
+    resolution: {integrity: sha512-F9f+hqU5ZL73PuC8G54rk77ufeB2SAbU/kwBsVt7kegiUhOsdMogGE/LRj0Ws2wQUhnRTDKintKQgM196xEm4Q==}
 
-  '@chankay/site-shell@file:../www.chankay.com/packages/site-shell':
-    resolution: {directory: ../www.chankay.com/packages/site-shell, type: directory}
+  '@chankay/site-shell@2.0.0':
+    resolution: {integrity: sha512-SYwAdVw4OCrOUMxSyThwePzpC/USnUeBHf4cMTI28Oxb/GmsL7aQFHTW7uZNzYS+UtabzHAX/lTiT1Gxvef9zw==}
 
   '@emnapi/runtime@1.9.1':
     resolution: {integrity: sha512-VYi5+ZVLhpgK4hQ0TAjiQiZ6ol0oe4mBx7mVv7IflsiEp0OWoVsp/+f9Vc1hOhE0TtkORVrI1GvzyreqpgWtkA==}
@@ -2051,9 +2051,9 @@ snapshots:
     dependencies:
       fontkitten: 1.0.3
 
-  '@chankay/brand-assets@file:../www.chankay.com/packages/brand-assets': {}
+  '@chankay/brand-assets@1.0.0': {}
 
-  '@chankay/site-shell@file:../www.chankay.com/packages/site-shell': {}
+  '@chankay/site-shell@2.0.0': {}
 
   '@emnapi/runtime@1.9.1':
     dependencies:
