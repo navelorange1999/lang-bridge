@@ -6,10 +6,11 @@ LangBridge is a side-by-side programming language comparison tool for developers
 
 ## Features
 
+- **Animated landing page** — hero section with live typing animation powered by Typed.js
 - **Side-by-side syntax comparison** — pick any two languages and compare them concept by concept
 - **Concept-based learning** — organized by topic (variables, loops, async, etc.), not by language pair
 - **Section-aligned code blocks** — code examples are split into matching sections so differences stand out
-- **Shareable URLs** — `/?from=typescript&to=python&concept=variables`
+- **Shareable URLs** — `/diff?from=typescript&to=python&concept=variables`
 - **Sidebar navigation** — concepts grouped by category with a sticky sidebar
 
 ## Supported Languages
@@ -31,6 +32,7 @@ TypeScript, Python, Go, Rust, C++, Java
 
 - [Astro](https://astro.build/) — static site generation
 - [Tailwind CSS](https://tailwindcss.com/) — styling
+- [Typed.js](https://mattboldt.com/demos/typed-js/) — typing animation on the landing page (loaded from CDN)
 - [@chankay/site-shell](docs/site-shell.md) — shared navbar, theme tokens, brand assets
 - Content Collections + Zod — structured YAML content with validation
 
@@ -39,7 +41,9 @@ TypeScript, Python, Go, Rust, C++, Java
 ```
 src/
   pages/
-    index.astro              — single page, query params control state
+    index.astro              — landing page with animated hero
+    diff/
+      index.astro            — side-by-side comparison tool
   layouts/
     BaseLayout.astro         — root layout, site-shell CDN, fonts, meta
   components/
@@ -47,6 +51,10 @@ src/
     LanguageSelector.astro   — language pair selector (auto-submit)
     ConceptBlock.astro       — two-column code comparison
     CodeBlock.astro          — single-language code block
+    HeroCodeBlock.astro      — styled code block for the landing page
+    LanguagePills.astro      — language selector pills on the landing page
+  utils/
+    strings.ts               — display name helpers
   content/
     config.ts                — Zod schema
     concepts/
@@ -60,7 +68,7 @@ pnpm install
 pnpm dev
 ```
 
-Then open `http://localhost:4321/?from=typescript&to=python`.
+Then open `http://localhost:4321` for the landing page, or go directly to `http://localhost:4321/diff?from=typescript&to=python` for a comparison.
 
 ## Adding Content
 
