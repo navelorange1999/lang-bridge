@@ -1,240 +1,187 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Sidebar from '../components/Sidebar.astro';
-import LanguageSelector from '../components/LanguageSelector.astro';
-import ConceptBlock from '../components/ConceptBlock.astro';
-import { capitalize } from '../utils/strings';
+import HeroCodeBlock from '../components/HeroCodeBlock.astro';
+import LanguagePills from '../components/LanguagePills.astro';
 
-// Get all concept entries (each is {category}/{concept}/{language})
-const allEntries = await getCollection('concepts');
+const helloWorld: Record<string, { label: string; code: string }> = {
+  cpp:        { label: 'C++',        code: 'std::cout << "Hello, World!" << std::endl;' },
+  python:     { label: 'Python',     code: 'print("Hello, World!")' },
+  typescript: { label: 'TypeScript', code: 'console.log("Hello, World!");' },
+  go:         { label: 'Go',         code: 'fmt.Println("Hello, World!")' },
+  rust:       { label: 'Rust',       code: 'println!("Hello, World!");' },
+  java:       { label: 'Java',       code: 'System.out.println("Hello, World!");' },
+};
 
-// Group entries into concepts
-interface ConceptData {
-  id: string;
-  title: string;
-  category: string;
-  order: number;
-  languages: Record<string, { sections: Array<{ id: string; code: string }>; explanation: string }>;
-}
-
-const conceptMap = new Map<string, ConceptData>();
-const languageSet = new Set<string>();
-
-for (const entry of allEntries) {
-  const parts = entry.id.split('/');
-  const category = parts[0];
-  const conceptId = parts[1];
-  const language = parts[2];
-
-  languageSet.add(language);
-
-  if (!conceptMap.has(conceptId)) {
-    conceptMap.set(conceptId, {
-      id: conceptId,
-      title: entry.data.title,
-      category,
-      order: entry.data.order,
-      languages: {},
-    });
-  }
-  conceptMap.get(conceptId)!.languages[language] = {
-    sections: entry.data.sections,
-    explanation: entry.data.explanation,
-  };
-}
-
-const allConcepts = Array.from(conceptMap.values()).sort((a, b) => a.order - b.order);
-const availableLanguages = Array.from(languageSet).sort();
-
-// Default languages for initial server render
-const defaultFrom = 'typescript';
-const defaultTo = 'python';
+const defaultLang = 'cpp';
+const languages = Object.entries(helloWorld).map(([id, { label }]) => ({ id, label }));
 ---
 
 <BaseLayout
-  title={`LangBridge — ${capitalize(defaultFrom)} → ${capitalize(defaultTo)}`}
-  description={`Learn programming languages with side-by-side syntax comparisons.`}
+  title="LangBridge"
+  description="Learn programming languages by comparing syntax side-by-side."
 >
-  <div class="max-w-[1400px] w-[calc(100%-2rem)] mx-auto flex min-h-[calc(100vh-var(--navbar-height))]">
-    <Sidebar concepts={allConcepts.map(c => ({ id: c.id, data: { title: c.title, category: c.category, order: c.order } }))} />
+  <section class="max-w-[1400px] w-[calc(100%-2rem)] mx-auto">
+    <div class="min-h-[calc(100vh-4rem)] py-20 md:py-32 flex flex-col items-center justify-center text-center">
 
-    <!-- Main content -->
-    <main class="flex-1 min-w-0">
-      <!-- Sticky toolbar — extends right to viewport edge -->
-      <div class="sticky top-[var(--navbar-height)] z-40 bg-background border-b border-border -mr-[max((100vw-1400px)/2,1rem)] pr-[max((100vw-1400px)/2,1rem)]">
-        <div class="py-2.5 pl-3 pr-3 flex items-center justify-between">
-          <LanguageSelector fromLang={defaultFrom} toLang={defaultTo} availableLanguages={availableLanguages} />
-          <button
-            id="theme-toggle"
-            type="button"
-            class="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-            aria-label="Toggle dark mode"
-          >
-            <svg class="theme-icon-sun w-5 h-5 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
-            </svg>
-            <svg class="theme-icon-moon w-5 h-5 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
-            </svg>
-          </button>
-        </div>
+      <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
+        Learn by comparing.
+      </h1>
+
+      <p class="mt-4 text-base md:text-lg text-muted-foreground max-w-xl">
+        Side-by-side syntax comparison across 6 programming languages.
+        See how the same concept looks in TypeScript, Python, Go, Rust, C++, and Java.
+      </p>
+
+      <div class="mt-12 w-full max-w-2xl">
+        <HeroCodeBlock defaultCode={helloWorld[defaultLang].code} defaultLanguage={helloWorld[defaultLang].label} />
       </div>
 
-      <div class="py-8 pl-3">
-        {allConcepts.map((concept, i) => (
-          <div class="concept-panel" data-concept={concept.id} style={i === 0 ? '' : 'display:none'}>
-            <ConceptBlock
-              title={concept.title}
-              fromLang={defaultFrom}
-              toLang={defaultTo}
-              languages={concept.languages}
-            />
-          </div>
-        ))}
+      <div class="mt-6">
+        <LanguagePills languages={languages} activeLanguage={defaultLang} />
       </div>
-    </main>
-  </div>
+
+      <a
+        href="/diff"
+        class="mt-12 inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium text-base hover:opacity-90 transition-opacity"
+      >
+        Start Comparing
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+        </svg>
+      </a>
+
+    </div>
+  </section>
 
   <script>
-    function initApp() {
-      const nav = document.getElementById('concept-nav');
-      const fromSelect = document.getElementById('lang-from') as HTMLSelectElement | null;
-      const toSelect = document.getElementById('lang-to') as HTMLSelectElement | null;
-      if (!nav || !fromSelect || !toSelect) return;
+    const HELLO_WORLD: Record<string, { label: string; code: string; html: string }> = {
+      cpp: {
+        label: 'C++',
+        code: 'std::cout << "Hello, World!" << std::endl;',
+        html: '<span class="hl-ns">std</span><span class="hl-op">::</span><span class="hl-fn">cout</span> <span class="hl-op">&lt;&lt;</span> <span class="hl-str">"Hello, World!"</span> <span class="hl-op">&lt;&lt;</span> <span class="hl-ns">std</span><span class="hl-op">::</span><span class="hl-fn">endl</span>;',
+      },
+      python: {
+        label: 'Python',
+        code: 'print("Hello, World!")',
+        html: '<span class="hl-fn">print</span>(<span class="hl-str">"Hello, World!"</span>)',
+      },
+      typescript: {
+        label: 'TypeScript',
+        code: 'console.log("Hello, World!");',
+        html: '<span class="hl-ns">console</span>.<span class="hl-fn">log</span>(<span class="hl-str">"Hello, World!"</span>);',
+      },
+      go: {
+        label: 'Go',
+        code: 'fmt.Println("Hello, World!")',
+        html: '<span class="hl-ns">fmt</span>.<span class="hl-fn">Println</span>(<span class="hl-str">"Hello, World!"</span>)',
+      },
+      rust: {
+        label: 'Rust',
+        code: 'println!("Hello, World!");',
+        html: '<span class="hl-fn">println!</span>(<span class="hl-str">"Hello, World!"</span>);',
+      },
+      java: {
+        label: 'Java',
+        code: 'System.out.println("Hello, World!");',
+        html: '<span class="hl-ns">System</span>.out.<span class="hl-fn">println</span>(<span class="hl-str">"Hello, World!"</span>);',
+      },
+    };
 
-      const ACTIVE = 'bg-muted text-primary';
-      const INACTIVE = 'text-muted-foreground hover:text-foreground hover:bg-muted';
+    let currentTyped: any = null;
+    let currentLang = 'cpp';
+    let backspaceTimer: number | null = null;
 
-      // --- Language switching ---
-      function disableSameLanguageOptions() {
-        const fromVal = fromSelect!.value;
-        const toVal = toSelect!.value;
-        for (const opt of fromSelect!.options) {
-          opt.disabled = opt.value === toVal;
-        }
-        for (const opt of toSelect!.options) {
-          opt.disabled = opt.value === fromVal;
-        }
-      }
+    async function loadTypedJs() {
+      const module = await import('https://cdn.jsdelivr.net/npm/typed.js@2.1.0/+esm');
+      return module.default;
+    }
 
-      function switchLanguages(fromLang: string, toLang: string) {
-        // Update code block visibility
-        document.querySelectorAll<HTMLElement>('.code-section[data-side="from"]').forEach((el) => {
-          el.style.display = el.dataset.lang === fromLang ? '' : 'none';
-        });
-        document.querySelectorAll<HTMLElement>('.code-section[data-side="to"]').forEach((el) => {
-          el.style.display = el.dataset.lang === toLang ? '' : 'none';
-        });
-        // Update labels
-        document.querySelectorAll<HTMLElement>('.lang-label[data-side="from"]').forEach((el) => {
-          el.textContent = fromLang;
-        });
-        document.querySelectorAll<HTMLElement>('.lang-label[data-side="to"]').forEach((el) => {
-          el.textContent = toLang;
-        });
-        disableSameLanguageOptions();
-      }
+    function applyHighlight(el: HTMLElement, lang: string) {
+      // Remove Typed.js cursor temporarily, apply highlighted HTML, then re-add cursor
+      const cursor = el.parentElement?.querySelector('.typed-cursor');
+      el.innerHTML = HELLO_WORLD[lang].html;
+      if (cursor) el.after(cursor);
+    }
 
-      function updateUrlAndSwitch() {
-        const fromLang = fromSelect!.value;
-        const toLang = toSelect!.value;
-        switchLanguages(fromLang, toLang);
-        const url = new URL(location.href);
-        url.searchParams.set('from', fromLang);
-        url.searchParams.set('to', toLang);
-        history.replaceState(null, '', url.toString());
-      }
+    async function initHero() {
+      const Typed = await loadTypedJs();
+      const typedEl = document.getElementById('hero-typed');
+      const labelEl = document.getElementById('hero-lang-label');
+      const pillContainer = document.getElementById('lang-pills');
+      if (!typedEl || !labelEl || !pillContainer) return;
 
-      fromSelect.addEventListener('change', updateUrlAndSwitch);
-      toSelect.addEventListener('change', updateUrlAndSwitch);
+      // Clear server-rendered text before Typed.js takes over
+      typedEl.textContent = '';
 
-      // Read initial languages from URL params
-      const params = new URLSearchParams(location.search);
-      const urlFrom = params.get('from');
-      const urlTo = params.get('to');
-      if (urlFrom && fromSelect.querySelector(`option[value="${urlFrom}"]`)) {
-        fromSelect.value = urlFrom;
-      }
-      if (urlTo && toSelect.querySelector(`option[value="${urlTo}"]`)) {
-        toSelect.value = urlTo;
-      }
-      // If URL params result in same language on both sides, reset to defaults
-      if (fromSelect.value === toSelect.value) {
-        fromSelect.value = 'typescript';
-        toSelect.value = 'python';
-      }
-      switchLanguages(fromSelect.value, toSelect.value);
-
-      // --- Concept navigation ---
-      function switchConcept(id: string) {
-        document.querySelectorAll('.concept-panel').forEach((el) => {
-          (el as HTMLElement).style.display = el.getAttribute('data-concept') === id ? '' : 'none';
-        });
-        nav.querySelectorAll('.concept-link').forEach((link) => {
-          const isActive = link.getAttribute('data-concept') === id;
-          ACTIVE.split(' ').forEach((c) => link.classList.toggle(c, isActive));
-          INACTIVE.split(' ').forEach((c) => link.classList.toggle(c, !isActive));
-        });
-      }
-
-      const initialConcept = params.get('concept');
-      if (initialConcept && document.querySelector(`.concept-panel[data-concept="${initialConcept}"]`)) {
-        switchConcept(initialConcept);
-      }
-
-      nav.addEventListener('click', (e) => {
-        const link = (e.target as HTMLElement).closest('.concept-link');
-        if (!link) return;
-        e.preventDefault();
-        const id = link.getAttribute('data-concept');
-        if (!id) return;
-        switchConcept(id);
-        const url = new URL(location.href);
-        url.searchParams.set('concept', id);
-        history.pushState(null, '', url.toString());
+      // Initial type-in animation
+      currentTyped = new Typed(typedEl, {
+        strings: [HELLO_WORLD[currentLang].code],
+        typeSpeed: 40,
+        showCursor: true,
+        cursorChar: '|',
+        onComplete: () => applyHighlight(typedEl, currentLang),
       });
 
-      window.addEventListener('popstate', () => {
-        const p = new URLSearchParams(location.search);
-        const id = p.get('concept');
-        if (id) switchConcept(id);
-        const pFrom = p.get('from');
-        const pTo = p.get('to');
-        if (pFrom && fromSelect.querySelector(`option[value="${pFrom}"]`)) {
-          fromSelect.value = pFrom;
+      // Pill click handler
+      pillContainer.addEventListener('click', (e: Event) => {
+        const btn = (e.target as HTMLElement).closest('[data-lang]') as HTMLElement | null;
+        if (!btn) return;
+        const lang = btn.dataset.lang;
+        if (!lang || lang === currentLang) return;
+
+        // Cancel any in-progress animation
+        if (backspaceTimer !== null) {
+          clearTimeout(backspaceTimer);
+          backspaceTimer = null;
         }
-        if (pTo && toSelect.querySelector(`option[value="${pTo}"]`)) {
-          toSelect.value = pTo;
+        if (currentTyped) {
+          currentTyped.destroy();
+          currentTyped = null;
         }
-        switchLanguages(fromSelect.value, toSelect.value);
+
+        // Update active pill styling
+        pillContainer.querySelectorAll('[data-lang]').forEach((pill) => {
+          const isActive = pill.getAttribute('data-lang') === lang;
+          pill.classList.toggle('bg-primary', isActive);
+          pill.classList.toggle('text-primary-foreground', isActive);
+          pill.classList.toggle('bg-muted', !isActive);
+          pill.classList.toggle('text-muted-foreground', !isActive);
+        });
+
+        // Backspace old text, then type new text
+        const oldText = HELLO_WORLD[currentLang].code;
+        const newText = HELLO_WORLD[lang].code;
+        let charIndex = oldText.length;
+
+        typedEl.textContent = oldText;
+        typedEl.classList.add('backspacing');
+
+        function backspace() {
+          if (charIndex > 0) {
+            charIndex--;
+            typedEl!.textContent = oldText.substring(0, charIndex);
+            backspaceTimer = window.setTimeout(backspace, 20);
+          } else {
+            backspaceTimer = null;
+            typedEl!.classList.remove('backspacing');
+            labelEl!.textContent = HELLO_WORLD[lang!].label.toLowerCase();
+
+            currentTyped = new Typed(typedEl!, {
+              strings: [newText],
+              typeSpeed: 40,
+              startDelay: 150,
+              showCursor: true,
+              cursorChar: '|',
+              onComplete: () => applyHighlight(typedEl!, lang!),
+            });
+          }
+        }
+
+        currentLang = lang;
+        backspace();
       });
     }
 
-    initApp();
-
-    function initThemeToggle() {
-      const btn = document.getElementById('theme-toggle');
-      if (!btn) return;
-
-      const sunIcon = btn.querySelector('.theme-icon-sun') as HTMLElement;
-      const moonIcon = btn.querySelector('.theme-icon-moon') as HTMLElement;
-
-      function updateIcons() {
-        const isDark = document.documentElement.classList.contains('dark');
-        sunIcon.style.display = isDark ? 'block' : 'none';
-        moonIcon.style.display = isDark ? 'none' : 'block';
-      }
-
-      btn.addEventListener('click', () => {
-        const isDark = document.documentElement.classList.toggle('dark');
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        updateIcons();
-      });
-
-      updateIcons();
-    }
-
-    initThemeToggle();
+    initHero();
   </script>
 </BaseLayout>

@@ -3,10 +3,14 @@
 ```
 src/
   pages/
-    index.astro                — single page, sidebar + detail layout, query params control state
+    index.astro                — landing page with animated Hello World (Typed.js)
+    diff/
+      index.astro              — comparison tool, sidebar + detail layout, query params control state
   layouts/
     BaseLayout.astro           — root layout, loads site-shell CDN, fonts, meta
   components/
+    HeroCodeBlock.astro        — dark code display block for landing page hero
+    LanguagePills.astro        — pill-button language selector for landing page
     Sidebar.astro              — concept navigation sidebar, grouped by category
     LanguageSelector.astro     — language pair selector (auto-submit)
     ConceptBlock.astro         — two-column code comparison, sections aligned by blank lines

@@ -2,8 +2,9 @@
 interface Props {
   title: string;
   description: string;
+  brandUrl?: string;
 }
-const { title, description } = Astro.props;
+const { title, description, brandUrl } = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -32,17 +33,20 @@ const { title, description } = Astro.props;
       })();
     </script>
   </head>
-  <body class="bg-background text-foreground min-h-screen">
+  <body class="bg-background text-foreground min-h-screen flex flex-col">
     <!-- Sticky navbar -->
     <div class="sticky top-0 z-50">
       <chankay-site-shell
         position="header"
         site-name="LangBridge"
         repo-url="https://github.com/navelorange1999/lang-bridge"
+        {...brandUrl ? { 'data-brand-url': brandUrl } : {}}
       ></chankay-site-shell>
     </div>
 
-    <slot />
+    <div class="flex-1">
+      <slot />
+    </div>
 
     <!-- Footer -->
     <chankay-site-shell position="footer"></chankay-site-shell>
@@ -55,8 +59,14 @@ const { title, description } = Astro.props;
           const shadow = el.shadowRoot;
           if (!shadow) return;
           const style = document.createElement('style');
-          style.textContent = '.site-shell-container { width: min(1400px, calc(100% - 2rem)) !important; }';
+          style.textContent = '.site-shell-container { width: min(1400px, calc(100% - 2rem)) !important; } @media (max-width: 768px) { .site-shell-link { display: none !important; } }';
           shadow.appendChild(style);
+          // Override brand link URL if data-brand-url is set
+          const brandUrl = el.getAttribute('data-brand-url');
+          if (brandUrl) {
+            const brandLink = shadow.querySelector('.site-shell-brand') as HTMLAnchorElement | null;
+            if (brandLink) brandLink.href = brandUrl;
+          }
           const logo = shadow.querySelector('.site-shell-brand-logo') as HTMLElement | null;
           if (logo) logos.push(logo);
         });

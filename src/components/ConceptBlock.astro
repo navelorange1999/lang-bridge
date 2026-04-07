@@ -1,6 +1,5 @@
 ---
 import { Code } from 'astro:components';
-import { capitalize } from '../utils/strings';
 
 interface Section {
   id: string;
@@ -51,7 +50,7 @@ for (const [lang, entry] of langEntries) {
       const cellClass = `section-cell${isFirst ? ' first' : ''}${isLast ? ' last' : ''}`;
       return (
         <>
-          <div class={cellClass}>
+          <div class={cellClass} data-side="from">
             {langEntries.map(([lang]) => {
               const section = sectionMap.get(sectionId)?.get(lang);
               return section && (
@@ -62,7 +61,7 @@ for (const [lang, entry] of langEntries) {
               );
             })}
           </div>
-          <div class={cellClass}>
+          <div class={cellClass} data-side="to">
             {langEntries.map(([lang]) => {
               const section = sectionMap.get(sectionId)?.get(lang);
               return section && (
@@ -117,6 +116,7 @@ for (const [lang, entry] of langEntries) {
     line-height: 1.625 !important;
   }
 
+
   /* Top padding for first section row */
   .section-cell.first .code-section :global(pre) {
     padding-top: 1rem !important;
@@ -142,15 +142,15 @@ for (const [lang, entry] of langEntries) {
     opacity: 0.4;
   }
 
-  /* Responsive: single column on mobile */
+  /* Responsive: single column on mobile, show "to" language only */
   @media (max-width: 768px) {
     .comparison-grid {
       grid-template-columns: 1fr;
     }
-    .code-section[data-side="to"] {
-      display: none !important;
+    .section-cell[data-side="from"] {
+      display: none;
     }
-    .lang-label[data-side="to"] {
+    .lang-label[data-side="from"] {
       display: none;
     }
   }
