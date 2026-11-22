@@ -32,7 +32,7 @@ TypeScript, Python, Go, Rust, C++, Java
 
 - [Astro](https://astro.build/) — static site generation
 - [Tailwind CSS](https://tailwindcss.com/) — styling
-- [Typed.js](https://mattboldt.com/demos/typed-js/) — typing animation on the landing page (loaded from CDN)
+- [Typed.js](https://mattboldt.com/demos/typed-js/) — bundled typing animation on the landing page
 - [@chankay/site-shell](docs/site-shell.md) — shared navbar, theme tokens, brand assets
 - Content Collections + Zod — structured YAML content with validation
 
@@ -45,7 +45,7 @@ src/
     diff/
       index.astro            — side-by-side comparison tool
   layouts/
-    BaseLayout.astro         — root layout, site-shell CDN, fonts, meta
+    BaseLayout.astro         — root layout, shared shell, page metadata
   components/
     Sidebar.astro            — concept navigation grouped by category
     LanguageSelector.astro   — language pair selector (auto-submit)
@@ -69,6 +69,12 @@ pnpm dev
 ```
 
 Then open `http://localhost:4321` for the landing page, or go directly to `http://localhost:4321/diff?from=typescript&to=python` for a comparison.
+
+## Demo Gateway Release
+
+The GitHub Actions release workflow runs a build for pull requests targeting `master` and publishes `master` builds through the protected `release` environment. It serves the landing page at `/lang-bridge/` and the comparison at `/lang-bridge/diff/`. Query parameters use the same format as the standalone build.
+
+Run `DEMO_RELEASE="$(git rev-parse HEAD)" bash scripts/build-demo.sh` to build a gateway artifact locally. The script writes `dist/`, using `/lang-bridge/_r/<commit>/` for assets. The standalone build uses `pnpm build`.
 
 ## Adding Content
 

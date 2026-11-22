@@ -13,7 +13,7 @@
 ## Astro Components
 
 - Every component must define a `Props` interface in its frontmatter and destructure via `Astro.props`.
-- All pages use `BaseLayout` (`src/layouts/BaseLayout.astro`) as the root layout. It loads site-shell CDN resources, fonts, and meta tags.
+- All pages use `BaseLayout` (`src/layouts/BaseLayout.astro`) as the root layout for the shared shell and metadata.
 - There are two pages: `src/pages/index.astro` (landing page) and `src/pages/diff/index.astro` (comparison tool). The comparison tool uses `?concept=`, `?from=`, and `?to=` query params for state.
 
 ## Content Collections

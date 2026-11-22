@@ -41,7 +41,7 @@ const languages = Object.entries(helloWorld).map(([id, { label }]) => ({ id, lab
       </div>
 
       <a
-        href="/diff"
+        href={import.meta.env.DEMO_ASSET_BASE ? `${import.meta.env.BASE_URL}diff/` : '/diff'}
         class="mt-12 inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium text-base hover:opacity-90 transition-opacity"
       >
         Start Comparing
@@ -54,6 +54,8 @@ const languages = Object.entries(helloWorld).map(([id, { label }]) => ({ id, lab
   </section>
 
   <script>
+    import Typed from 'typed.js';
+
     const HELLO_WORLD: Record<string, { label: string; code: string; html: string }> = {
       cpp: {
         label: 'C++',
@@ -87,14 +89,9 @@ const languages = Object.entries(helloWorld).map(([id, { label }]) => ({ id, lab
       },
     };
 
-    let currentTyped: any = null;
+    let currentTyped: Typed | null = null;
     let currentLang = 'cpp';
     let backspaceTimer: number | null = null;
-
-    async function loadTypedJs() {
-      const module = await import('https://cdn.jsdelivr.net/npm/typed.js@2.1.0/+esm');
-      return module.default;
-    }
 
     function applyHighlight(el: HTMLElement, lang: string) {
       // Remove Typed.js cursor temporarily, apply highlighted HTML, then re-add cursor
@@ -103,8 +100,7 @@ const languages = Object.entries(helloWorld).map(([id, { label }]) => ({ id, lab
       if (cursor) el.after(cursor);
     }
 
-    async function initHero() {
-      const Typed = await loadTypedJs();
+    function initHero() {
       const typedEl = document.getElementById('hero-typed');
       const labelEl = document.getElementById('hero-lang-label');
       const pillContainer = document.getElementById('lang-pills');
