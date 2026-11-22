@@ -50,6 +50,7 @@ const availableLanguages = Array.from(languageSet).sort();
 // Default languages for initial server render
 const defaultFrom = 'typescript';
 const defaultTo = 'python';
+const demoBuild = Boolean(import.meta.env.DEMO_ASSET_BASE);
 ---
 
 <BaseLayout
@@ -66,19 +67,25 @@ const defaultTo = 'python';
       <div class="sticky top-[var(--navbar-height)] z-40 bg-background border-b border-border -mr-[max((100vw-1400px)/2,1rem)] pr-[max((100vw-1400px)/2,1rem)] -ml-4 pl-4 md:ml-0 md:pl-0">
         <div class="py-2.5 pl-3 pr-3 flex items-center justify-between">
           <LanguageSelector fromLang={defaultFrom} toLang={defaultTo} availableLanguages={availableLanguages} />
-          <button
-            id="theme-toggle"
-            type="button"
-            class="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-            aria-label="Toggle dark mode"
-          >
-            <svg class="theme-icon-sun w-5 h-5 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
-            </svg>
-            <svg class="theme-icon-moon w-5 h-5 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
-            </svg>
-          </button>
+          {demoBuild ? (
+            <a href={import.meta.env.BASE_URL} class="p-1.5 text-sm text-muted-foreground hover:text-foreground">
+              LangBridge home
+            </a>
+          ) : (
+            <button
+              id="theme-toggle"
+              type="button"
+              class="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+              aria-label="Toggle dark mode"
+            >
+              <svg class="theme-icon-sun w-5 h-5 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+              </svg>
+              <svg class="theme-icon-moon w-5 h-5 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
+              </svg>
+            </button>
+          )}
         </div>
       </div>
 
@@ -168,25 +175,12 @@ const defaultTo = 'python';
       fromSelect.addEventListener('change', updateUrlAndSwitch);
       toSelect.addEventListener('change', updateUrlAndSwitch);
 
-      const params = new URLSearchParams(location.search);
-      const urlFrom = params.get('from');
-      const urlTo = params.get('to');
-      if (urlFrom && fromSelect.querySelector(`option[value="${urlFrom}"]`)) {
-        fromSelect.value = urlFrom;
-      }
-      if (urlTo && toSelect.querySelector(`option[value="${urlTo}"]`)) {
-        toSelect.value = urlTo;
-      }
-      if (fromSelect.value === toSelect.value) {
-        fromSelect.value = 'typescript';
-        toSelect.value = 'python';
-      }
-      switchLanguages(fromSelect.value, toSelect.value);
-
       // --- Concept navigation ---
+      const panels = [...document.querySelectorAll<HTMLElement>('.concept-panel')];
+
       function switchConcept(id: string) {
-        document.querySelectorAll('.concept-panel').forEach((el) => {
-          (el as HTMLElement).style.display = el.getAttribute('data-concept') === id ? '' : 'none';
+        panels.forEach((panel) => {
+          panel.style.display = panel.dataset.concept === id ? '' : 'none';
         });
         // Update active state in ALL navs (desktop + mobile)
         document.querySelectorAll('.concept-link').forEach((link) => {
@@ -196,10 +190,26 @@ const defaultTo = 'python';
         });
       }
 
-      const initialConcept = params.get('concept');
-      if (initialConcept && document.querySelector(`.concept-panel[data-concept="${initialConcept}"]`)) {
-        switchConcept(initialConcept);
+      function readLanguage(select: HTMLSelectElement, value: string | null) {
+        return [...select.options].find(option => option.value === value)
+          ?? [...select.options].find(option => option.defaultSelected);
       }
+
+      function restoreComparison() {
+        const params = new URLSearchParams(location.search);
+        const from = readLanguage(fromSelect!, params.get('from'))?.value;
+        const to = readLanguage(toSelect!, params.get('to'))?.value;
+        const useSelection = from && to && from !== to;
+        fromSelect!.value = useSelection ? from : 'typescript';
+        toSelect!.value = useSelection ? to : 'python';
+        switchLanguages(fromSelect!.value, toSelect!.value);
+
+        const requested = params.get('concept');
+        const panel = panels.find(panel => panel.dataset.concept === requested) ?? panels[0];
+        if (panel?.dataset.concept) switchConcept(panel.dataset.concept);
+      }
+
+      restoreComparison();
 
       function handleNavClick(e: Event) {
         const link = (e.target as HTMLElement).closest('.concept-link');
@@ -216,20 +226,7 @@ const defaultTo = 'python';
       nav.addEventListener('click', handleNavClick);
       mobileNav?.addEventListener('click', handleNavClick);
 
-      window.addEventListener('popstate', () => {
-        const p = new URLSearchParams(location.search);
-        const id = p.get('concept');
-        if (id) switchConcept(id);
-        const pFrom = p.get('from');
-        const pTo = p.get('to');
-        if (pFrom && fromSelect.querySelector(`option[value="${pFrom}"]`)) {
-          fromSelect.value = pFrom;
-        }
-        if (pTo && toSelect.querySelector(`option[value="${pTo}"]`)) {
-          toSelect.value = pTo;
-        }
-        switchLanguages(fromSelect.value, toSelect.value);
-      });
+      window.addEventListener('popstate', restoreComparison);
     }
 
     initApp();
