@@ -7,14 +7,13 @@ src/
     diff/
       index.astro              — comparison tool, sidebar + detail layout, query params control state
   layouts/
-    BaseLayout.astro           — root layout, loads site-shell CDN, fonts, meta
+    BaseLayout.astro           — root layout, shared shell, and page metadata
   components/
     HeroCodeBlock.astro        — dark code display block for landing page hero
     LanguagePills.astro        — pill-button language selector for landing page
     Sidebar.astro              — concept navigation sidebar, grouped by category
     LanguageSelector.astro     — language pair selector (auto-submit)
     ConceptBlock.astro         — two-column code comparison, sections aligned by blank lines
-    CodeBlock.astro            — single-language code block (utility component)
   content/
     config.ts                  — Zod schema definition
     concepts/
@@ -23,7 +22,6 @@ src/
     strings.ts                 — capitalize() utility
 public/
   favicon/                     — brand assets from @chankay/brand-assets
-package/                       — local monorepo packages (site-shell, brand-assets)
 tailwind.config.mjs            — Tailwind config + site-shell token mappings
 astro.config.mjs               — Astro configuration
 tsconfig.json                  — TypeScript strict + path aliases

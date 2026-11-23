@@ -11,18 +11,9 @@ importers:
       '@astrojs/tailwind':
         specifier: ^6.0.2
         version: 6.0.2(astro@5.18.1(jiti@1.21.7)(rollup@4.60.0)(typescript@5.9.3)(yaml@2.8.3))(tailwindcss@3.4.19(yaml@2.8.3))
-      '@chankay/brand-assets':
-        specifier: ^1.0.0
-        version: 1.0.0
-      '@chankay/site-shell':
-        specifier: ^2.0.0
-        version: 2.0.0
       astro:
         specifier: ^5.18.1
         version: 5.18.1(jiti@1.21.7)(rollup@4.60.0)(typescript@5.9.3)(yaml@2.8.3)
-      js-yaml:
-        specifier: ^4.1.0
-        version: 4.1.1
       tailwindcss:
         specifier: ^3.4.1
         version: 3.4.19(yaml@2.8.3)
@@ -30,9 +21,6 @@ importers:
         specifier: 2.1.0
         version: 2.1.0
     devDependencies:
-      '@types/js-yaml':
-        specifier: ^4.0.9
-        version: 4.0.9
       typescript:
         specifier: ^5.7.2
         version: 5.9.3
@@ -86,12 +74,6 @@ packages:
   '@capsizecss/unpack@4.0.0':
     resolution: {integrity: sha512-VERIM64vtTP1C4mxQ5thVT9fK0apjPFobqybMtA1UdUujWka24ERHbRHFGmpbbhp73MhV+KSsHQH9C6uOTdEQA==}
     engines: {node: '>=18'}
-
-  '@chankay/brand-assets@1.0.0':
-    resolution: {integrity: sha512-F9f+hqU5ZL73PuC8G54rk77ufeB2SAbU/kwBsVt7kegiUhOsdMogGE/LRj0Ws2wQUhnRTDKintKQgM196xEm4Q==}
-
-  '@chankay/site-shell@2.0.0':
-    resolution: {integrity: sha512-SYwAdVw4OCrOUMxSyThwePzpC/USnUeBHf4cMTI28Oxb/GmsL7aQFHTW7uZNzYS+UtabzHAX/lTiT1Gxvef9zw==}
 
   '@emnapi/runtime@1.9.1':
     resolution: {integrity: sha512-VYi5+ZVLhpgK4hQ0TAjiQiZ6ol0oe4mBx7mVv7IflsiEp0OWoVsp/+f9Vc1hOhE0TtkORVrI1GvzyreqpgWtkA==}
@@ -736,9 +718,6 @@ packages:
 
   '@types/hast@3.0.4':
     resolution: {integrity: sha512-WPs+bbQw5aCj+x6laNGWLH3wviHtoCv/P3+otBhbOhJgG8qtpdAMlTCxLtsTWA7LH1Oh/bFCHsBn0TPS5m30EQ==}
-
-  '@types/js-yaml@4.0.9':
-    resolution: {integrity: sha512-k4MGaQl5TGo/iipqb2UDG2UwjXziSWkh0uysQelTlJpX1qGlpUZYm8PnO4DxG1qBomtJUdYJ6qR6xdIah10JLg==}
 
   '@types/mdast@4.0.4':
     resolution: {integrity: sha512-kGaNbPh1k7AFzgpud/gMdvIm5xuECykRR+JnWKQno9TAXVa6WIVCGTPvYGekIDL4uwCZQSYbUxNBSb1aUo79oA==}
@@ -2057,10 +2036,6 @@ snapshots:
     dependencies:
       fontkitten: 1.0.3
 
-  '@chankay/brand-assets@1.0.0': {}
-
-  '@chankay/site-shell@2.0.0': {}
-
   '@emnapi/runtime@1.9.1':
     dependencies:
       tslib: 2.8.1
@@ -2472,8 +2447,6 @@ snapshots:
   '@types/hast@3.0.4':
     dependencies:
       '@types/unist': 3.0.3
-
-  '@types/js-yaml@4.0.9': {}
 
   '@types/mdast@4.0.4':
     dependencies:
