@@ -50,7 +50,6 @@ src/
     Sidebar.astro            — concept navigation grouped by category
     LanguageSelector.astro   — language pair selector (auto-submit)
     ConceptBlock.astro       — two-column code comparison
-    CodeBlock.astro          — single-language code block
     HeroCodeBlock.astro      — styled code block for the landing page
     LanguagePills.astro      — language selector pills on the landing page
   utils/
@@ -72,7 +71,7 @@ Then open `http://localhost:4321` for the landing page, or go directly to `http:
 
 ## Demo Gateway Release
 
-The GitHub Actions release workflow runs a build for pull requests targeting `master` and publishes `master` builds through the protected `release` environment. It serves the landing page at `/lang-bridge/` and the comparison at `/lang-bridge/diff/`. Query parameters use the same format as the standalone build.
+The GitHub Actions release workflow runs a build for pull requests targeting `master` and publishes `master` builds through the protected `release` environment. The gateway serves the [landing page](https://demos.chankay.com/lang-bridge/) and the [comparison tool](https://demos.chankay.com/lang-bridge/diff/). Query parameters use the same format as the standalone build.
 
 Run `DEMO_RELEASE="$(git rev-parse HEAD)" bash scripts/build-demo.sh` to build a gateway artifact locally. The script writes `dist/`, using `/lang-bridge/_r/<commit>/` for assets. The standalone build uses `pnpm build`.
 

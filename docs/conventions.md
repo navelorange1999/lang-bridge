@@ -3,7 +3,6 @@
 ## Package Manager
 
 - Use **pnpm**. Do not use npm or yarn.
-- `@chankay/site-shell` and `@chankay/brand-assets` are local monorepo packages located in the `package/` directory.
 
 ## TypeScript
 
